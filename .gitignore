@@ -1,0 +1,46 @@
+# See https://help.github.com/articles/ignoring-files for more about ignoring files.
+
+# IDE / Editor
+.vscode/
+.idea/
+
+# Bundler
+/.bundle
+
+# Database(SQLite)
+/db/*.sqlite3
+/db/*.sqlite3-*
+
+# Logs / Temp / Cache
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
+/tmp/pids/*
+!/tmp/pids/
+!/tmp/pids/.keep
+/tmp/cache/*
+!/tmp/cache/.keep
+
+# Uploaded files
+/storage/*
+!/storage/.keep
+
+# Assets / Node / Yarn
+/public/assets
+/public/packs
+/public/packs-test
+/node_modules
+/yarn-error.log
+yarn-debug.log*
+.yarn-integrity
+
+# Debug / Byebug
+.byebug_history
+
+# Secrets / Credentials
+/config/master.key
+
+# Optional temp/log files
+*.log
+*.tmp
