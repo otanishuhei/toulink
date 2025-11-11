@@ -5,5 +5,7 @@ class CreateTags < ActiveRecord::Migration[6.1]
       t.boolean :is_deleted,  null: false, default: false
       t.timestamps
     end
+    # タグ名の重複禁止
+    add_index :tags, :name, unique: true
   end
 end
