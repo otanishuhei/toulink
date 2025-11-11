@@ -7,6 +7,6 @@ class CreateCommunityMembers < ActiveRecord::Migration[6.1]
       t.timestamps
     end
     # 同じユーザーが同じコミュニティに重複して登録されるのを禁止する
-    add_index :community_members, [:user_id, :community_id], unique:true
+    add_index :community_members, [:user_id, :community_id], unique: true
   end
 end
