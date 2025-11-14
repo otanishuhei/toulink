@@ -1,2 +1,111 @@
-<h1>Public::Homes#terms_of_service</h1>
-<p>Find me in app/views/public/homes/terms_of_service.html.erb</p>
+<div class="container mt-5 mb-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+
+      <h2 class="display-4 text-dark font-weight-bold mb-4 pb-2 text-center">
+        <i class="fas fa-file-contract mr-3 text-warning"></i>Toulink 利用規約
+      </h2>
+
+      <p class="lead text-center text-muted mb-5">
+        本規約は、Toulink（つーりんく）の利用に関する条件を定めるものです。<br>
+        サービス利用前に必ずお読みください。
+      </p>
+
+      <%# --- 第1条：適用範囲 --- %>
+      <div class="card shadow-sm mb-4 border-secondary">
+        <div class="card-header bg-secondary text-white font-weight-bold">
+          第1条（本規約の適用）
+        </div>
+        <div class="card-body">
+          <p class="card-text">
+            本規約は、本サービスを利用する全てのユーザーと当サービス運営者との間に適用されます。ユーザーは、本サービスの利用をもって本規約に同意したものとみなされます。
+          </p>
+        </div>
+      </div>
+
+      <%# --- 第2条：定義 --- %>
+      <div class="card shadow-sm mb-4 border-secondary">
+        <div class="card-header bg-secondary text-white font-weight-bold">
+          第2条（ユーザー登録とアカウント管理）
+        </div>
+        <div class="card-body">
+          <ul class="list-unstyled mb-0 small">
+            <li><i class="fas fa-angle-right text-secondary mr-2"></i>ユーザーは、自己の責任においてアカウント情報を管理するものとし、第三者に利用させたり、貸与、譲渡することはできません。</li>
+            <li><i class="fas fa-angle-right text-secondary mr-2"></i>未成年者は、親権者または法定代理人の同意を得て本サービスを利用するものとします。</li>
+          </ul>
+        </div>
+      </div>
+
+      <%# --- 第3条：サービス内容 --- %>
+      <div class="card shadow-sm mb-4 border-secondary">
+        <div class="card-header bg-secondary text-white font-weight-bold">
+          第3条（本サービスの内容）
+        </div>
+        <div class="card-body">
+          <p class="card-text">
+            本サービスは、バイクツーリングに関する情報（ルート、スポット、イベント）の共有、ユーザー間の交流、およびツーリング募集を目的として提供されます。
+          </p>
+        </div>
+      </div>
+
+      <%# --- 第4条：投稿コンテンツ --- %>
+      <div class="card shadow-sm mb-4 border-secondary">
+        <div class="card-header bg-secondary text-white font-weight-bold">
+          第4条（投稿コンテンツの権利）
+        </div>
+        <div class="card-body">
+          <p class="card-text">
+            ユーザーが投稿したコンテンツ（写真、文章、ルート情報等）の著作権は、当該ユーザーに留保されます。<br>
+            ただし、ユーザーは運営者に対し、本サービスの運営およびプロモーションに必要な範囲内での利用（複製、公開、改変等）を無償で許諾するものとします。
+          </p>
+        </div>
+      </div>
+
+      <%# --- 第5条：禁止事項 (重要) --- %>
+      <div class="card shadow-sm mb-4 border-danger">
+        <div class="card-header bg-danger text-white font-weight-bold">
+          第5条（禁止事項）
+        </div>
+        <div class="card-body">
+          <p class="card-text font-weight-bold">
+            ユーザーは、本サービスの利用にあたり、以下の行為を行ってはならないものとします。
+          </p>
+          <ul class="list-unstyled mb-0 small">
+            <li><i class="fa-solid fa-circle-xmark text-danger mr-2"></i>法令、公序良俗に反する行為、またはその恐れのある行為。</li>
+            <li><i class="fa-solid fa-circle-xmark text-danger mr-2"></i>他のユーザー、第三者、または運営者の著作権、プライバシー権、その他の権利を侵害する行為。</li>
+            <li><i class="fa-solid fa-circle-xmark text-danger mr-2"></i>過度な誹謗中傷、差別的表現、またはハラスメント行為。</li>
+            <li><i class="fa-solid fa-circle-xmark text-danger mr-2"></i><strong>危険な運転、法令違反となるルートの推奨や投稿</strong>。</li>
+            <li><i class="fa-solid fa-circle-xmark text-danger mr-2"></i>営業、広告宣伝目的の行為（運営者が認めた場合を除く）。</li>
+            <li><i class="fa-solid fa-circle-xmark text-danger mr-2"></i>虚偽の情報を登録、投稿する行為。</li>
+          </ul>
+        </div>
+      </div>
+
+      <%# --- 第6条：免責事項 (重要) --- %>
+      <div class="card shadow-sm mb-5 border-danger">
+        <div class="card-header bg-danger text-white font-weight-bold">
+          第6条（免責事項）
+        </div>
+        <div class="card-body">
+          <ul class="list-unstyled mb-0 small">
+            <li><i class="fa-solid fa-triangle-exclamation text-warning mr-2"></i>本サービスは情報共有の場であり、<strong>ツーリングの企画、参加、実施に関する事故、損害、トラブル等について、運営者は一切の責任を負いません</strong>。全て自己責任で行動するものとします。</li>
+            <li><i class="fa-solid fa-triangle-exclamation text-warning mr-2"></i>本サービス上に掲載された情報（ルート、スポット、募集情報など）の正確性、完全性、有用性について、運営者は一切保証しません。</li>
+          </ul>
+        </div>
+      </div>
+
+      <%# --- 問い合わせ先 --- %>
+      <div class="card shadow-sm mb-4">
+        <div class="card-header font-weight-bold">
+          附則
+        </div>
+        <div class="card-body">
+          <p class="card-text small">
+            本規約は、2025年11月14日から適用されるものとします。本規約は、運営者の判断により、ユーザーの承諾なく変更されることがあります。
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
