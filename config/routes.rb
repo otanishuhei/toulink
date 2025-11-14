@@ -1,12 +1,11 @@
 Rails.application.routes.draw do
   # Devise認証（管理者/ユーザー）
-  devise_for :admins, controllers: {
+  devise_for :admin, skip: [:registrations, :passwords], controllers: {
     sessions: 'admin/sessions'
   }
-  devise_for :users, controllers: {
+  devise_for :users, skip: [:passwords], controllers: {
     sessions: 'public/sessions',
     registrations: 'public/registrations',
-    # passwords: 'public/passwords' （パスワードリセット機能は余裕があれば実装）
   }
 
   ## -- ユーザー側 (Public) ルーティング --
@@ -65,10 +64,9 @@ Rails.application.routes.draw do
     root 'homes#top' # 管理者ダッシュボード
 
     resources :users, only: [:index, :show, :update]
-    resources :posts, only: [:index, :show, :destroy]
-    resources :comments, only: [:index, :destroy]
-
+    resources :posts, only: [:index, :show, :update]
+    resources :comments, only: [:index, :update]
     resources :communities, only: [:index, :show, :update]
-    resources :tags, except: [:show, :new]
+    resources :tags, only: [:index, :create, :edit, :update]
   end
 end

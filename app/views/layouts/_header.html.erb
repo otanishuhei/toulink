@@ -1,0 +1,92 @@
+<header>
+  <nav class="navbar navbar-expand-md navbar-light bg-light">
+    <div class="container">
+
+      <%= link_to root_path, class: "navbar-brand" do %>
+        <strong class="text-primary">Toulink</strong>
+      <% end %>
+
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+      <% if user_signed_in? %>
+        <span class="navbar-text ml-5">
+          ようこそ、<%= current_user.name %>さん！
+        </span>
+      <% end %>
+        <ul class="navbar-nav ml-auto">
+
+          <li class="nav-item mr-3">
+            <form class="form-inline">
+              <input class="form-control mr-sm-2" type="search" name="keyword" placeholder="文字を入力" aria-label="Search">
+              <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">検索</button>
+            </form>
+          </li>
+
+          <% if admin_signed_in? %>
+            <li class="nav-item">
+              <a href="#" class="nav-link">ダッシュボード</a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link">会員管理</a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link">投稿管理</a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link">コメント管理</a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link">コミュニティ管理</a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link">タグ管理</a>
+            </li>
+            <li class="nav-item">
+              <%= link_to "ログアウト", destroy_admin_session_path, method: :delete, class: "nav-link" %>
+            </li>
+
+          <% elsif user_signed_in? %>
+            <li class="nav-item">
+              <a href="#" class="nav-link">マイページ</a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link">会員一覧</a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link">投稿一覧</a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link">コミュニティ</a>
+            </li>
+            <li class="nav-item">
+              <%= link_to "ログアウト", destroy_user_session_path, method: :delete, class: "nav-link" %>
+            </li>
+
+          <% else %>
+            <li class="nav-item">
+              <a href="#" class="nav-link">会員一覧</a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link">投稿一覧</a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link">コミュニティ</a>
+            </li>
+            <li class="nav-item">
+              <%= link_to "新規登録", new_user_registration_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "ログイン", new_user_session_path, class: "nav-link" %>
+            </li>
+          <% end %>
+
+        </ul>
+      </div>
+
+    </div>
+  </nav>
+</header>
