@@ -11,9 +11,9 @@
             メールアドレスとパスワードを入力してください
           </h5>
 
-          <%= render 'layouts/error_messages', resource: resource %>
+          <%= render "public/shared/error_messages", resource: resource %>
 
-          <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+          <%= form_with scope: resource_name, url: session_path(resource_name), local: true do |f| %>
             <div class="form-group">
               <%= f.email_field :email, class:"form-control", autofocus: true, autocomplete: "email", placeholder: "メールアドレス" %>
             </div>
