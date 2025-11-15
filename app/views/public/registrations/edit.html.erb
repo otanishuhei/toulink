@@ -1,0 +1,46 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-header bg-dark text-white">
+          <h4 class="px-2">アカウント情報編集</h4>
+        </div>
+
+        <div class="card-body bg-light">
+          <h5 class="mb-4">編集する情報を入力してください</h5>
+
+          <%= render 'shared/error_messages', object: resource %>
+
+          <%= form_with(model: resource, url: user_registration_path, local: true, method: :patch) do |f| %>
+            <div class="form-group">
+              <%= f.label :email, "メールアドレス（変更する場合のみ入力）" %>
+              <%= f.email_field :email, class:"form-control", autocomplete: "email", placeholder: "メールアドレス" %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :current_password, "現在のパスワード（必須）" %>
+              <%= f.password_field :current_password, class:"form-control", autocomplete: "current-password", placeholder: "現在のパスワードを入力" %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :password, "パスワード（変更する場合のみ入力）" %>
+              <% if @minimum_password_length %>
+                <em class="small text-muted">(<%= @minimum_password_length %>文字以上)</em>
+              <% end %>
+              <%= f.password_field :password, class:"form-control", autocomplete: "new-password", placeholder: "新しいパスワードを入力" %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :password_confirmation, "パスワード確認（変更する場合のみ入力）" %>
+              <%= f.password_field :password_confirmation, class:"form-control", autocomplete: "new-password", placeholder: "新しいパスワードを再入力" %>
+            </div>
+
+            <div class="actions mt-4 text-center">
+              <%= f.submit "更新する", class: "btn btn-primary btn-lg px-5" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
