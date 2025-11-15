@@ -13,6 +13,4 @@ class CommunityMember < ApplicationRecord
   validates :role, inclusion: { in: roles.keys }
   # 重複参加の防止（マイグレーションと連携）
   validates :user_id, uniqueness: { scope: :community_id, message: "は既に参加しています" }
-
-  
 end

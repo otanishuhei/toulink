@@ -11,7 +11,7 @@ users = [
 ]
 
 users.each do |user_attrs|
-  user = User.create!(user_attrs)
+  User.create!(user_attrs)
 end
 
 puts "#{User.count} users created."
@@ -38,7 +38,7 @@ User.all.each do |user|
   3.times do |i|
     Post.create!(
       user: user,
-      title: "#{user.name}の投稿#{i+1}",
+      title: "#{user.name}の投稿#{i + 1}",
       body: "これは#{user.name}のサンプル投稿です。",
       is_published: true,
       is_deleted: false

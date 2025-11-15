@@ -55,29 +55,28 @@ class Public::UsersController < ApplicationController
   end
 
   private
+    # ユーザー自身の情報編集・退会のみを許可
+    def ensure_correct_user
+      if params[:id].present?
+        @user = User.find(params[:id])
+      else
+        @user = current_user
+      end
 
-  # ユーザー自身の情報編集・退会のみを許可
-  def ensure_correct_user
-    if params[:id].present?
-      @user = User.find(params[:id])
-    else
-      @user = current_user
+      unless @user == current_user
+        redirect_to user_path(current_user), alert: "権限がありません。"
+      end
     end
 
-    unless @user == current_user
-      redirect_to user_path(current_user), alert: "権限がありません。"
+    # 退会済ユーザーがログイン後、限定的なアクションにアクセスできないようにする
+    def ensure_active_user
+      unless current_user.is_active
+        # ログイン阻止はsessions#createで処理済みだが、念の為ここでガード
+        redirect_to root_path, alert: "退会済みのためアクセスできません。" and return
+      end
     end
-  end
 
-  # 退会済ユーザーがログイン後、限定的なアクションにアクセスできないようにする
-  def ensure_active_user
-    unless current_user.is_active
-      # ログイン阻止はsessions#createで処理済みだが、念の為ここでガード
-      redirect_to root_path, alert: "退会済みのためアクセスできません。" and return
+    def user_params
+      params.require(:user).permit(:name, :introduction, :profile_image)
     end
-  end
-
-  def user_params
-    params.require(:user).permit(:name, :introduction, :profile_image)
-  end
 end

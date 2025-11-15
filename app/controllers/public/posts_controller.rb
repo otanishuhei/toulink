@@ -35,7 +35,7 @@ class Public::PostsController < ApplicationController
       redirect_to post_path(@post), notice: "投稿内容を更新しました。"
     else
       # バリデーション失敗時はeditビューを再表示 (エラーメッセージはビューで表示)
-      render :edit, status: :unprocessable_entity 
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -48,28 +48,27 @@ class Public::PostsController < ApplicationController
   end
 
   private
-
-  def set_post
-    @post = Post.find_by(id: params[:id], is_deleted: false)
-    unless @post
-      redirect_to posts_path, alert: "指定された投稿は見つかりませんでした。"
+    def set_post
+      @post = Post.find_by(id: params[:id], is_deleted: false)
+      unless @post
+        redirect_to posts_path, alert: "指定された投稿は見つかりませんでした。"
+      end
     end
-  end
 
-  def ensure_correct_user
-    unless @post.user == current_user
-      redirect_to posts_path, alert: "権限がありません。"
+    def ensure_correct_user
+      unless @post.user == current_user
+        redirect_to posts_path, alert: "権限がありません。"
+      end
     end
-  end
 
-  def post_params
-    params.require(:post).permit(
-      :title,
-      :body,
-      :latitude,
-      :longitude,
-      :post_image,
-      # tags_attributes: [:name] # タグ機能の実装時に追加
-    )
-  end
+    def post_params
+      params.require(:post).permit(
+        :title,
+        :body,
+        :latitude,
+        :longitude,
+        :post_image,
+        # tags_attributes: [:name] # タグ機能の実装時に追加
+      )
+    end
 end

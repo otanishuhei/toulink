@@ -1,7 +1,7 @@
 class Community < ApplicationRecord
   ## -- アソシエーション --
   # オーナー (User)
-  belongs_to :owner, class_name: 'User', foreign_key: 'owner_id'
+  belongs_to :owner, class_name: "User", foreign_key: "owner_id"
   # メンバー
   has_many :community_members, dependent: :destroy
   has_many :members, through: :community_members, source: :user
@@ -23,8 +23,7 @@ class Community < ApplicationRecord
   after_create :add_owner_as_member
 
   private
-
-  def add_owner_as_member
-    CommunityMember.create(user_id: owner_id, community: self, role: :leader)
-  end
+    def add_owner_as_member
+      CommunityMember.create(user_id: owner_id, community: self, role: :leader)
+    end
 end

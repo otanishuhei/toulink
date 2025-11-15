@@ -44,3 +44,6 @@ yarn-debug.log*
 # Optional temp/log files
 *.log
 *.tmp
+
+# 環境変数ファイル（機密情報が含まれるためGitに含めない）
+/.env

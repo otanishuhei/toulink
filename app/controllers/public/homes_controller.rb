@@ -5,7 +5,7 @@ class Public::HomesController < ApplicationController
     # 人気コミュニティグループ3件（メンバー数が多い順）
     @popular_communities = Community.active.left_joins(:community_members)
                                     .group(:id)
-                                    .order('COUNT(community_members.id) DESC')
+                                    .order("COUNT(community_members.id) DESC")
                                     .limit(3)
   end
 

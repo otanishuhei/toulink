@@ -6,13 +6,13 @@ class User < ApplicationRecord
   has_many :likes, dependent: :destroy
   has_many :liked_posts, through: :likes, source: :post
   # コミュニティ（作成したものと参加中のもの）
-  has_many :owned_communities, class_name: 'Community', foreign_key: 'owner_id', dependent: :destroy
+  has_many :owned_communities, class_name: "Community", foreign_key: "owner_id", dependent: :destroy
   has_many :community_members, dependent: :destroy
   has_many :communities, through: :community_members
   # フォロー機能
-  has_many :relationships, class_name: 'Follow', foreign_key: 'follower_id', dependent: :destroy
+  has_many :relationships, class_name: "Follow", foreign_key: "follower_id", dependent: :destroy
   has_many :followings, through: :relationships, source: :followed
-  has_many :reverse_relationships, class_name: 'Follow', foreign_key: 'followed_id', dependent: :destroy
+  has_many :reverse_relationships, class_name: "Follow", foreign_key: "followed_id", dependent: :destroy
   has_many :followers, through: :reverse_relationships, source: :follower
   # Active Storage（プロフィール画像）
   has_one_attached :profile_image
