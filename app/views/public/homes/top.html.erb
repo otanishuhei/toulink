@@ -29,8 +29,7 @@
         <% @new_posts.each do |post| %>
           <div class="col-md-6 col-lg-3 mb-4">
             <div class="card shadow-sm h-100">
-              <%# 仮リンク %>
-              <%= link_to "#", class: "text-decoration-none text-dark" do %>
+              <%= link_to post_path(post), class: "text-decoration-none text-dark" do %>
                 <div class="card-img-top bg-light text-center p-3" style="height: 150px;">
                 </div>
                 <div class="card-body p-2">
@@ -51,20 +50,19 @@
           <% if current_user %>
             <%# 仮リンク %>
             <%= link_to "#", class: 'list-group-item list-group-item-action' do %>
-              <i class="fa-solid fa-id-card mr-2"></i>マイページへ
+              <s><i class="fa-solid fa-id-card mr-2"></i>マイページへ</s>
             <% end %>
           <% end %>
           <%# 仮リンク %>
           <%= link_to "#", class: 'list-group-item list-group-item-action' do %>
-            <i class="fa-solid fa-users mr-2"></i>会員一覧を見る
+            <s><i class="fa-solid fa-users mr-2"></i>会員一覧を見る</s>
           <% end %>
-          <%# 仮リンク %>
-          <%= link_to "#", class: 'list-group-item list-group-item-action' do %>
+          <%= link_to posts_path, class: 'list-group-item list-group-item-action' do %>
             <i class="fa-regular fa-clipboard mr-2"></i>投稿一覧を見る
           <% end %>
           <%# 仮リンク %>
           <%= link_to "#", class: 'list-group-item list-group-item-action' do %>
-            <i class="fa-solid fa-earth-asia mr-2"></i>コミュニティを見る
+            <s><i class="fa-solid fa-earth-asia mr-2"></i>コミュニティを見る</s>
           <% end %>
         </div>
       </div>

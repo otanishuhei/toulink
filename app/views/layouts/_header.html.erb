@@ -1,9 +1,9 @@
 <header>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav class="navbar navbar-expand-xl navbar-dark bg-dark sticky-top">
     <div class="container">
 
-      <%= link_to root_path, class: "navbar-brand" do %>
-        <strong class="text-primary">Toulink</strong>
+      <%= link_to root_path, class: "navbar-brand text-white" do %>
+        <i class="fa-solid fa-motorcycle mr-1"></i><strong>Toulink</strong>
       <% end %>
 
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -12,81 +12,79 @@
       </button>
 
       <div class="collapse navbar-collapse" id="navbarNav">
-      <% if user_signed_in? %>
-        <span class="navbar-text ml-5">
-          ようこそ、<strong><%= current_user.name %></strong> さん！
-        </span>
-      <% end %>
         <ul class="navbar-nav ml-auto">
-
-          <li class="nav-item mr-3">
-            <form class="form-inline">
-              <input class="form-control mr-sm-2" type="search" name="keyword" placeholder="文字を入力" aria-label="Search">
-              <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">検索</button>
-            </form>
-          </li>
+          <% if user_signed_in? %>
+            <span class="navbar-text mr-4">
+              <small>ユーザー名：<%= current_user.name %></small>
+            </span>
+          <% end %>
 
           <% if admin_signed_in? %>
             <li class="nav-item">
-              <a href="#" class="nav-link">ダッシュボード</a>
+              <s><a href="#" class="nav-link text-white">ダッシュボード</a></s>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link">会員管理</a>
+              <s><a href="#" class="nav-link text-white">会員管理</a></s>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link">投稿管理</a>
+              <s><a href="#" class="nav-link text-white">投稿管理</a></s>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link">コメント管理</a>
+              <s><a href="#" class="nav-link text-white">コメント管理</a></s>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link">コミュニティ管理</a>
+              <s><a href="#" class="nav-link text-white">コミュニティ管理</a></s>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link">タグ管理</a>
+              <s><a href="#" class="nav-link text-white">タグ管理</a></s>
             </li>
             <li class="nav-item">
-              <%= link_to "ログアウト", destroy_admin_session_path, method: :delete, class: "nav-link" %>
+              <%= link_to "ログアウト", destroy_admin_session_path, method: :delete, class: "nav-link text-white" %>
             </li>
 
           <% elsif user_signed_in? %>
             <li class="nav-item">
-              <a href="#" class="nav-link">マイページ</a>
+              <s><a href="#" class="nav-link text-white">マイページ</a></s>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link">会員一覧</a>
+              <s><a href="#" class="nav-link text-white">会員一覧</a></s>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link">投稿一覧</a>
+              <%= link_to "投稿一覧", posts_path, class: "nav-link text-white" %>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link">コミュニティ</a>
+              <s><a href="#" class="nav-link text-white">コミュニティ</a></s>
             </li>
             <li class="nav-item">
-              <%= link_to "ログアウト", destroy_user_session_path, method: :delete, class: "nav-link" %>
+              <%= link_to "ログアウト", destroy_user_session_path, method: :delete, class: "nav-link text-white" %>
             </li>
 
           <% else %>
             <li class="nav-item">
-              <a href="#" class="nav-link">会員一覧</a>
+              <s><a href="#" class="nav-link text-white">会員一覧</a></s>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link">投稿一覧</a>
+              <%= link_to "投稿一覧", posts_path, class: "nav-link text-white" %>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link">コミュニティ</a>
+              <s><a href="#" class="nav-link text-white">コミュニティ</a></s>
             </li>
             <li class="nav-item">
-              <%= link_to "新規登録", new_user_registration_path, class: "nav-link" %>
+              <%= link_to "新規登録", new_user_registration_path, class: "nav-link text-white" %>
             </li>
             <li class="nav-item">
-              <%= link_to "ログイン", new_user_session_path, class: "nav-link" %>
+              <%= link_to "ログイン", new_user_session_path, class: "nav-link text-white" %>
             </li>
           <% end %>
-
         </ul>
-      </div>
 
+        <hr class="d-xl-none border-secondary my-2">
+
+        <form class="form-inline ml-2">
+          <input class="form-control mr-sm-2" type="search" name="keyword" placeholder="文字を入力" aria-label="Search">
+          <button class="btn btn-outline-light my-2 my-sm-0 " type="submit">検索</button>
+        </form>
+      </div>
     </div>
   </nav>
 </header>

@@ -11,7 +11,7 @@
             メールアドレスとパスワードを入力してください
           </h5>
 
-          <%= render "public/shared/error_messages", resource: resource %>
+          <%= render 'shared/error_messages', object: resource %>
 
           <%= form_with scope: resource_name, url: session_path(resource_name), local: true do |f| %>
             <div class="form-group">

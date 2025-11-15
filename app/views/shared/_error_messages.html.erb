@@ -1,0 +1,17 @@
+<%# class: 任意でCSSクラスを指定可能（デフォルトはBootstrapのalert） %>
+<% css_class = local_assigns[:class] || 'alert alert-danger mb-4' %>
+
+<% if object.errors.any? %>
+  <div class="<%= css_class %>" role="alert">
+    <h4 class="alert-heading">
+      <%= I18n.t("errors.messages.not_saved",
+                 count: object.errors.count,
+                 resource: object.class.model_name.human.downcase) %>
+    </h4>
+    <ul class="list-unstyled">
+      <% object.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

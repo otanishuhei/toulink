@@ -1,2 +1,26 @@
-<h1>Public::Posts#index</h1>
-<p>Find me in app/views/public/posts/index.html.erb</p>
+<div class="container mt-4">
+  <h1 class="mb-4">投稿一覧</h1>
+
+  <%= link_to "新規投稿", new_post_path, class: "btn btn-primary mb-4" %>
+
+  <% @posts.each do |post| %>
+    <div class="card mb-3 shadow-sm">
+      <% if post.post_image.attached? %>
+        <%= image_tag post.post_image.variant(resize_to_limit: [400, 300]), class: "card-img-top" %>
+      <% end %>
+      <div class="card-body">
+        <h5 class="card-title">
+          <%= link_to post.title, post_path(post), class: "text-dark" %>
+        </h5>
+        <p class="card-text"><%= truncate(post.body, length: 100) %></p>
+        <p class="text-muted mb-0">
+          投稿者: <%= post.user.name || "退会済みユーザー" %> | 投稿日: <%= l(post.created_at, format: :short) %>
+        </p>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="d-flex justify-content-center mt-4">
+    <%= paginate @posts %>
+  </div>
+</div>
