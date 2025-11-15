@@ -1,72 +1,57 @@
 class Public::UsersController < ApplicationController
-  # ログイン中のユーザーのみアクセス可能
   before_action :authenticate_user!
-  # 自分の情報に関するアクションのみ、退会済ユーザーのアクセスを許可しない
   before_action :ensure_active_user, except: [:show, :index]
-  # 自分のレコードのみ編集・更新・退会ができるように設定
   before_action :ensure_correct_user, only: [:edit, :update, :unsubscribe, :withdraw]
 
-  # GET /users
   def index
     @users = User.active.page(params[:page]).per(20)
   end
 
-  # GET /users/:id
   def show
-    @user = User.active.find(params[:id])
+    @user = User.active.find_by(id: params[:id])
+    return redirect_to users_path, alert: "このユーザーは存在しません。" unless @user
+
     @posts = @user.posts.published.order(created_at: :desc).limit(10)
   end
 
-  # GET /mypage
   def mypage
     @user = current_user
-    @posts = @user.posts.order(created_at: :desc).limit(10)
+    @posts = @user.posts.order(created_at: :desc)
   end
 
-  # GET /mypage/edit
   def edit
-    # @userはensure_correct_userで設定済み
   end
 
-  # PATCH/PUT /mypage
   def update
-    # @userはensure_correct_userで設定済み
     if @user.update(user_params)
-      redirect_to mypage_path, notice: "登録情報を更新しました。"
+      redirect_to mypage_path, notice: "プロフィールを更新しました。"
     else
       render :edit
     end
   end
 
-  # GET /mypage/unsubscribe
   def unsubscribe
-    # @userはensure_correct_userで設定済み
   end
 
-  # PATCH /mypage/withdraw
   def withdraw
-    # @userはensure_correct_userで設定済み
     @user.update(is_active: false) # 論理削除
     reset_session # 強制ログアウト
-    redirect_to root_path, notice: "退会処理を実行しました。ご利用いただきありがとうございました。"
+    redirect_to new_user_registration_path, notice: "退会処理を実行しました。ご利用いただきありがとうございました。"
   end
 
-  # GET /mypage/likes
   def likes
-    @user = current_user
-    @liked_posts = @user.liked_posts.published.page(params[:page]).per(10)
+    # @user = current_user
+    # @liked_posts = @user.liked_posts.published.page(params[:page]).per(10)
   end
 
-  # GET /mypage/comments
   def comments
-    @user = current_user
-    @comments = @user.comments.published.order(created_at: :desc).page(params[:page]).per(10)
+    # @user = current_user
+    # @comments = @user.comments.published.order(created_at: :desc).page(params[:page]).per(10)
   end
 
-  # GET /mypage/communities
   def communities
-    @user = current_user
-    @communities = @user.communities.active.page(params[:page]).per(10)
+    # @user = current_user
+    # @communities = @user.communities.active.page(params[:page]).per(10)
   end
 
   private
@@ -93,6 +78,6 @@ class Public::UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:name, :email, :introduction, :bike_type, :riding_pace, :profile_image)
+    params.require(:user).permit(:name, :introduction, :profile_image)
   end
 end

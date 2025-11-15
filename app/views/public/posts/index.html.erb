@@ -5,17 +5,19 @@
 
   <% @posts.each do |post| %>
     <div class="card mb-3 shadow-sm">
-      <% if post.post_image.attached? %>
-        <%= image_tag post.post_image.variant(resize_to_limit: [400, 300]), class: "card-img-top" %>
-      <% end %>
-      <div class="card-body">
-        <h5 class="card-title">
-          <%= link_to post.title, post_path(post), class: "text-dark" %>
-        </h5>
-        <p class="card-text"><%= truncate(post.body, length: 100) %></p>
-        <p class="text-muted mb-0">
-          投稿者: <%= post.user.name || "退会済みユーザー" %> | 投稿日: <%= l(post.created_at, format: :short) %>
-        </p>
+      <div class="d-flex align-items-start">
+        <div class="card-body p-2 flex-grow-1">
+          <h5 class="card-title mb-1">
+            <%= link_to post.title, post_path(post), class: "text-dark" %>
+          </h5>
+          <p class="card-text small mb-1"><%= truncate(post.body, length: 100) %></p>
+          <p class="text-muted small mb-0">
+            投稿者: <%= post.user.is_active ? post.user.name : "退会済みユーザー" %> | 投稿日: <%= l(post.created_at, format: :short) %>
+          </p>
+        </div>
+        <% if post.post_image.attached? %>
+          <%= image_tag post.post_image.variant(resize_to_limit: [200, 150]), class: "rounded" %>
+        <% end %>
       </div>
     </div>
   <% end %>

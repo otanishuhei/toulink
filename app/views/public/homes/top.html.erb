@@ -34,7 +34,7 @@
                 </div>
                 <div class="card-body p-2">
                   <p class="card-title font-weight-bold mb-1 small"><%= truncate(post.title, length: 25) %></p>
-                  <p class="card-text text-muted small mb-0">by <%= post.user.name %></p>
+                  <p class="card-text text-muted small mb-0">by <%= post.user.is_active ? post.user.name : "退会済みユーザー" %></p>
                 </div>
               <% end %>
             </div>
@@ -48,9 +48,8 @@
         <h5 class="font-weight-bold pb-2">メニュー（仮）</h5>
         <div class="list-group list-group-flush small">
           <% if current_user %>
-            <%# 仮リンク %>
-            <%= link_to "#", class: 'list-group-item list-group-item-action' do %>
-              <s><i class="fa-solid fa-id-card mr-2"></i>マイページへ</s>
+            <%= link_to mypage_path, class: 'list-group-item list-group-item-action' do %>
+              <i class="fa-solid fa-id-card mr-2"></i>マイページへ
             <% end %>
           <% end %>
           <%# 仮リンク %>
