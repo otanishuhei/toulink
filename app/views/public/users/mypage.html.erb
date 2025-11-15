@@ -1,2 +1,64 @@
-<h1>Public::Users#mypage</h1>
-<p>Find me in app/views/public/users/mypage.html.erb</p>
+<h2><%= current_user.name %> さんのマイページ</h2>
+<hr>
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4>ユーザー情報</h4>
+      </div>
+      <div class="card-body">
+        <div class="mb-2 d-flex justify-content-center align-items-center">
+          <% if @user.profile_image.attached? %>
+            <%= image_tag @user.profile_image.variant(resize_to_limit: [100, 100]), class: "rounded-circle mb-3" %>
+          <% else %>
+            <i class="fas fa-user-circle fa-8x"></i>
+          <% end %>
+        </div>
+        <p><strong>氏名:</strong> <%= @user.name %></p>
+        <p><strong>メール:</strong> <%= @user.email %></p>
+        <p><strong>自己紹介:</strong> <%= @user.introduction %></p>
+
+        <%= link_to "プロフィール編集", edit_mypage_path, class: "btn btn-info btn-sm" %>
+        <%= link_to "アカウント情報編集", edit_user_registration_path, class: "btn btn-info btn-sm" %><br>
+
+        <hr>
+
+        <div class="mt-2 d-flex align-items-center">
+          <p class="mb-0 mr-2">退会をご希望の方はこちら:</p>
+          <%= link_to "退会手続きへ", unsubscribe_path, class: "btn btn-danger btn-sm" %>
+        </div>
+      </div>
+    </div>
+    
+
+  </div>
+
+  <div class="col-md-8">
+    <h3>あなたの投稿一覧</h3>
+    <% if @posts.present? %>
+      <div class="row">
+        <% @posts.each do |post| %>
+          <div class="card mb-3 shadow-sm w-100">
+            <div class="d-flex align-items-start">
+              <div class="card-body p-2 flex-grow-1">
+                <h5 class="card-title mb-1">
+                  <%= link_to post.title, post_path(post), class: "text-dark" %>
+                </h5>
+                <p class="card-text small mb-1"><%= truncate(post.body, length: 100) %></p>
+                <p class="text-muted small mb-0">
+                  投稿者: <%= post.user.name || "退会済みユーザー" %> | 投稿日: <%= l(post.created_at, format: :short) %>
+                </p>
+              </div>
+              <% if post.post_image.attached? %>
+                <%= image_tag post.post_image.variant(resize_to_limit: [200, 150]), class: "rounded" %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p>まだ投稿がありません。</p>
+    <% end %>
+  </div>
+</div>
