@@ -18,6 +18,15 @@ class Post < ApplicationRecord
   scope :published, -> { where(is_published: true, is_deleted: false) }
   scope :draft, -> { where(is_published: false, is_deleted: false) }
   scope :deleted, -> { where(is_deleted: true) }
+  # 検索
+  scope :search_by_query, ->(query) {
+    return all unless query.present?
+    where("title LIKE ? OR body LIKE ?", "%#{query}%", "%#{query}%")
+  }
+  scope :by_tag_name, ->(query) {
+    return all unless query.present?
+    joins(:tags).where("tags.name LIKE ?", "%#{query}%").distinct
+  }
 
   ## -- バリデーション --
   validates :title, presence: true, length: { maximum: 50 }
