@@ -1,7 +1,11 @@
 <div class="container mt-4">
-  <h1 class="mb-4">投稿一覧</h1>
-
-  <%= link_to "新規投稿", new_post_path, class: "btn btn-primary mb-4" %>
+  <div class="d-flex mb-4">
+    <h1>投稿一覧</h1>
+    <%= link_to new_post_path, class: "btn btn-outline-success ml-auto d-flex align-items-center" do %>
+      <span class="mr-2">新規投稿</span>
+      <i class="fa-regular fa-square-plus fa-lg"></i>
+    <% end %>
+  </div>
 
   <% @posts.each do |post| %>
     <div class="card mb-3 shadow-sm">

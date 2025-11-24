@@ -4,7 +4,7 @@ class Public::UsersController < ApplicationController
   before_action :ensure_correct_user, only: [:edit, :update, :unsubscribe, :withdraw]
 
   def index
-    @users = User.active.page(params[:page]).per(20)
+    @users = User.active.order(created_at: :desc).page(params[:page]).per(20)
   end
 
   def show
