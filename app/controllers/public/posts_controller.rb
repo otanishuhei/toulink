@@ -5,7 +5,23 @@ class Public::PostsController < ApplicationController
 
   def index
     @posts = Post.published.order(created_at: :desc)
-    @posts = Post.published.order(created_at: :desc).page(params[:page])
+
+    # 検索内容と検索タイプを取得
+    query = params[:query].to_s.strip
+    search_type = params[:search_type]
+
+    # 検索内容が入力されている場合のみ検索を実行
+    if query.present?
+      case search_type
+      when "tag"
+        @posts = @posts.by_tag_name(query)
+      else
+        @posts = @posts.search_by_query(query)
+      end
+    end
+
+    # ページネーションを適用
+    @posts = @posts.page(params[:page])
   end
 
   def show

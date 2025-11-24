@@ -80,10 +80,12 @@
 
         <hr class="d-xl-none border-secondary my-2">
 
-        <form class="form-inline ml-2">
-          <input class="form-control mr-sm-2" type="search" name="keyword" placeholder="文字を入力" aria-label="Search">
-          <button class="btn btn-outline-light my-2 my-sm-0 " type="submit">検索</button>
-        </form>
+        <% search_options = { "投稿検索" => "post", "タグ検索" => "tag" } %>
+        <%= form_with url: posts_path, method: :get, local: true, class: "form-inline ml-2" do |f| %>
+          <%= select_tag :search_type, options_for_select(search_options, params[:search_type]), class: "form-control mr-sm-2" %>
+          <%= f.search_field :query, placeholder: "検索内容を入力", class: "form-control mr-sm-2" %>
+          <%= f.submit "検索", class: "btn btn-outline-light my-2 my-sm-0" %>
+        <% end %>
       </div>
     </div>
   </nav>
