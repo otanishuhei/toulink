@@ -1,2 +1,25 @@
-<h1>Public::Communities#edit</h1>
-<p>Find me in app/views/public/communities/edit.html.erb</p>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-header bg-dark text-white">
+          <h4 class="px-2">コミュニティ編集</h4>
+        </div>
+
+        <%= form_with model: @community, url: communities_path, local: true do |f| %>
+          <%= render "form", f: f, community: @community %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="text-center py-5">
+      <%= link_to "コミュニティ詳細に戻る", community_path(@community), class: "btn btn-outline-secondary px-4" %>
+    </div>
+
+    <hr>
+
+    <div class="d-flex flex-column text-center my-5">
+      <span class="mb-2">コミュニティ削除はこちらから</span>
+      <%= link_to "コミュニティを削除", confirm_delete_community_path(@community), class: "btn btn-danger mx-auto" %>
+    </div>
+</div>

@@ -1,2 +1,25 @@
-<h1>Public::Communities#confirm_delete</h1>
-<p>Find me in app/views/public/communities/confirm_delete.html.erb</p>
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-6 text-center">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h4 class="mb-4 text-danger">コミュニティ削除の確認</h4>
+          <p>
+            コミュニティ「<strong><%= @community.name %></strong>」を削除すると、復元できません。<br>
+            本当に削除しますか？
+          </p>
+
+          <div class="d-flex justify-content-center align-items-center">
+            <%= button_to "削除する",
+                          withdraw_community_path(@community),
+                          method: :patch,
+                          class: "btn btn-danger btn-lg px-5 my-3",
+                          data: { confirm: "最終確認: 本当にこのコミュニティを削除しますか？" } %>
+
+            <%= link_to "キャンセル", community_path(@community), class: "btn btn-outline-secondary mt-2 ml-5" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

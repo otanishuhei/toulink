@@ -8,11 +8,13 @@
         </p>
       </div>
 
-      <% if @post.post_image.attached? %>
-        <div class="mb-4">
-          <%= image_tag @post.post_image.variant(resize_to_limit: [800, 600]), class: "img-fluid rounded shadow-sm" %>
-        </div>
-      <% end %>
+      <div class="d-flex justify-content-center">
+        <% if @post.post_image.attached? %>
+          <div class="mb-4">
+            <%= image_tag @post.post_image.variant(resize_to_limit: [800, 600]), class: "img-fluid rounded shadow-sm" %>
+          </div>
+        <% end %>
+      </div>
 
       <div class="mb-5">
         <p class="lead"><%= @post.body %></p>
@@ -27,7 +29,7 @@
               data: { confirm: "本当に削除しますか？" },
               class: "btn btn-danger" %>
         <% end %>
-        <%= link_to "投稿一覧に戻る", posts_path, class: "btn btn-secondary ml-auto" %>
+        <%= link_to "投稿一覧に戻る", posts_path, class: "btn btn-outline-secondary px-4 ml-auto" %>
       </div>
 
       <%= render "public/comments/comment_list", post: @post, comments: @comments %>

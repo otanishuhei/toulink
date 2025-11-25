@@ -23,6 +23,7 @@ class Community < ApplicationRecord
   after_create :add_owner_as_member
 
   private
+
     def add_owner_as_member
       CommunityMember.create(user_id: owner_id, community: self, role: :leader)
     end
