@@ -37,4 +37,8 @@ class Post < ApplicationRecord
   # 公開状態・論理削除ステータスの必須確認
   validates :is_published, inclusion: { in: [true, false] }
   validates :is_deleted, inclusion: { in: [true, false] }
+
+  def liked_by?(user)
+    likes.exists?(user_id: user.id)
+  end
 end
