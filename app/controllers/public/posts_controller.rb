@@ -25,6 +25,8 @@ class Public::PostsController < ApplicationController
   end
 
   def show
+    @comments = @post.comments.published.includes(:user)
+    @comment = Comment.new
   end
 
   def new
@@ -33,12 +35,10 @@ class Public::PostsController < ApplicationController
 
   def create
     @post = current_user.posts.new(post_params)
-    @post.is_published = true # デフォルト設定
 
     if @post.save
       redirect_to post_path(@post), notice: "投稿が完了しました。"
     else
-      # バリデーション失敗時はnewビューを再表示 (エラーメッセージはビューで表示)
       render :new, status: :unprocessable_entity
     end
   end
@@ -50,7 +50,6 @@ class Public::PostsController < ApplicationController
     if @post.update(post_params)
       redirect_to post_path(@post), notice: "投稿内容を更新しました。"
     else
-      # バリデーション失敗時はeditビューを再表示 (エラーメッセージはビューで表示)
       render :edit, status: :unprocessable_entity
     end
   end

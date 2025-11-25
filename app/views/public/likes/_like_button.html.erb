@@ -1,0 +1,17 @@
+<div id="likes_buttons_<%= post.id %>">
+  <% if user_signed_in? %>
+    <% if post.liked_by?(current_user) %>
+      <%= link_to post_likes_path(post), method: :delete, remote: true, class: "btn btn-outline-danger mr-2" do %>
+        <i class="fa-solid fa-heart"></i> <%= post.likes.count %>
+      <% end %>
+    <% else %>
+      <%= link_to post_likes_path(post), method: :post, remote:true, class: "btn btn-outline-danger mr-2" do %>
+        <i class="fa-regular fa-heart"></i> <%= post.likes.count %>
+      <% end %>
+    <% end %>
+  <% else %>
+    <span class="btn mr-2 disabled text-danger">
+      <i class="far fa-heart"></i> <%= post.likes.count %>
+    </span>
+  <% end %>
+</div>
