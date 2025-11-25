@@ -32,32 +32,113 @@
         </div>
       </div>
     </div>
-    
-
   </div>
 
   <div class="col-md-8">
-    <h3>あなたの投稿一覧</h3>
-    <% if @posts.present? %>
+    <h3>参加中のコミュニティ</h3>
+    <% if @joined_communities.present? %>
       <div class="row">
-        <% @posts.each do |post| %>
-          <div class="card mb-3 shadow-sm w-100">
-            <div class="d-flex align-items-start">
-              <div class="card-body p-2 flex-grow-1">
-                <h5 class="card-title mb-1">
-                  <%= link_to post.title, post_path(post), class: "text-dark" %>
-                </h5>
-                <p class="card-text small mb-1"><%= truncate(post.body, length: 100) %></p>
-                <p class="text-muted small mb-0">
-                  投稿者: <%= post.user.name || "退会済みユーザー" %> | 投稿日: <%= l(post.created_at, format: :short) %>
-                </p>
+        <% @joined_communities.each do |community| %>
+          <div class="col-md-6 mb-3">
+            <div class="card shadow-sm h-100">
+              <div class="card-body text-center">
+                <h5 class="card-title"><%= link_to community.name, community_path(community) %></h5>
+                <p class="card-text small mb-0">メンバー数: <%= community.members.count %>名</p>
               </div>
-              <% if post.post_image.attached? %>
-                <%= image_tag post.post_image.variant(resize_to_limit: [200, 150]), class: "rounded" %>
-              <% end %>
             </div>
           </div>
         <% end %>
+      </div>
+      <div class="d-flex justify-content-center">
+        <%= paginate @joined_communities, param_name: :community_page %>
+      </div>
+    <% else %>
+      <p>参加中のコミュニティはありません。</p>
+    <% end %>
+
+    <h3 class="mt-4">参加/参加申請中のイベント</h3>
+    <% if @participating_events.present? %>
+      <div class="row">
+        <% @participating_events.each do |event| %>
+          <div class="col-md-6 mb-3">
+            <div class="card shadow-sm h-100">
+              <div class="card-body">
+                <h5 class="card-title">
+                  <%= link_to event.title, community_event_path(event.community, event), class: "text-dark font-weight-bold" %>
+                </h5>
+                <p class="card-text small mb-1">
+                  開催日時: <%= l(event.start_at, format: :short) %>
+                </p>
+                <p class="card-text small mb-1">
+                  コミュニティ: <%= link_to event.community.name, community_path(event.community) %>
+                </p>
+                <p class="card-text small text-muted mb-0">
+                  ステータス: <%= Event.statuses_i18n[event.status.to_sym] %>
+                </p>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <div class="d-flex justify-content-center mt-2">
+        <%= paginate @participating_events, param_name: :participation_page %>
+      </div>
+    <% else %>
+      <p>参加中のイベントはありません。</p>
+    <% end %>
+
+    <h3 class="mt-4">企画中のイベント</h3>
+    <% if @draft_events.present? %>
+      <div class="row">
+        <% @draft_events.each do |event| %>
+          <div class="col-md-6 mb-3">
+            <div class="card shadow-sm h-100">
+              <div class="card-body">
+                <h5 class="card-title"><%= link_to event.title, community_event_path(event.community, event) %></h5>
+                <p class="card-text small mb-1">開催日時: <%= l(event.start_at, format: :short) %></p>
+                <p class="card-text small mb-0">コミュニティ: <%= link_to event.community.name, community_path(event.community) %></p>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <div class="d-flex justify-content-center">
+        <%= paginate @draft_events, param_name: :event_page %>
+      </div>
+    <% else %>
+      <p>企画中のイベントはありません。</p>
+    <% end %>
+
+    <h3 class="mt-4">あなたの投稿一覧</h3>
+    <% if @posts.present? %>
+      <div class="row">
+        <% @posts.each do |post| %>
+          <div class="col-12 mb-3">
+            <div class="card shadow-sm">
+              <div class="row no-gutters align-items-center">
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title mb-1">
+                      <%= link_to post.title, post_path(post), class: "text-dark font-weight-bold" %>
+                    </h5>
+                    <p class="card-text small mb-1"><%= truncate(post.body, length: 100) %></p>
+                    <p class="text-muted small mb-0">
+                      投稿者: <%= post.user.name || "退会済みユーザー" %> | 投稿日: <%= l(post.created_at, format: :short) %>
+                    </p>
+                  </div>
+                </div>
+                <% if post.post_image.attached? %>
+                  <div class="col-md-4 d-flex justify-content-center align-items-center p-2">
+                    <%= image_tag post.post_image.variant(resize_to_limit: [200, 150]), class: "rounded img-fluid" %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <div class="d-flex justify-content-center">
+        <%= paginate @posts, param_name: :post_page %>
       </div>
     <% else %>
       <p>まだ投稿がありません。</p>

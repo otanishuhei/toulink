@@ -8,13 +8,29 @@ class Public::CommunitiesController < ApplicationController
   end
 
   def show
-    unless @community.is_active? || current_user&.is_admin?
-      flash[:alert] = "このコミュニティは現在非公開中です"
-      redirect_to communities_path and return
-    end
-
     if user_signed_in?
       @membership = @community.community_members.find_by(user: current_user)
+    end
+
+    @draft_events = []
+    if user_signed_in? && @membership.present?
+      @draft_events = @community.events
+                                .draft
+                                .where(organizer: current_user, is_deleted: false)
+                                .order(created_at: :desc)
+                                .page(params[:draft_page]).per(4)
+    end
+
+    @recruiting_events = @community.events.recruiting.where(is_deleted: false).order(start_at: :asc)
+                                   .page(params[:recruiting_page]).per(4)
+    @closed_events     = @community.events.closed.where(is_deleted: false).order(start_at: :asc)
+                                   .page(params[:closed_page]).per(4)
+    @finished_events   = @community.events.finished.where(is_deleted: false).order(start_at: :desc)
+                                   .page(params[:finished_page]).per(4)
+
+    unless @community.is_active? || current_user&.is_admin? || @community.owner == current_user
+      flash[:alert] = "このコミュニティは現在非公開中です"
+      redirect_to communities_path and return
     end
 
     @community_members = @community.community_members.includes(:user)

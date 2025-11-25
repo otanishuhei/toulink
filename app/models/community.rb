@@ -5,13 +5,16 @@ class Community < ApplicationRecord
   # メンバー
   has_many :community_members, dependent: :destroy
   has_many :members, through: :community_members, source: :user
-  # has_many :events, dependent: :destroy（今後 Event モデルを作成予定）
+  # イベント
+  has_many :events, dependent: :destroy
   # Active Storage (コミュニティ画像)
   has_one_attached :community_image
 
   ## -- スコープ --
   # コミュニティステータスの検索
   scope :active, -> { where(is_active: true) }
+  # あるユーザーが参加しているコミュニティ
+  scope :joined_by, ->(user_id) { joins(:community_members).where(community_members: { user_id: user_id }).distinct }
 
   ## -- バリデーション --
   validates :name, presence: true, uniqueness: true, length: { minimum: 3, maximum: 50 }

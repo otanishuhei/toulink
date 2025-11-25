@@ -16,7 +16,29 @@ class Public::UsersController < ApplicationController
 
   def mypage
     @user = current_user
-    @posts = @user.posts.order(created_at: :desc)
+    @joined_communities = Community.joined_by(@user.id)
+                                   .where(community_members: { user_id: @user.id })
+                                   .active
+                                   .order(created_at: :desc)
+                                   .page(params[:community_page])
+                                   .per(4)
+    @draft_events = @user.organized_events
+                         .where(status: :draft)
+                         .order(start_at: :asc)
+                         .page(params[:event_page])
+                         .per(4)
+    @participating_events = Event.joins(:participations)
+                                 .where(participations: { user_id: @user.id })
+                                 .where(is_deleted: false)
+                                 .where.not(status: :draft)
+                                 .order(start_at: :asc)
+                                 .page(params[:participation_page])
+                                 .per(4)
+    @posts = @user.posts
+                  .published
+                  .order(created_at: :desc)
+                  .page(params[:post_page])
+                  .per(6)
   end
 
   def edit

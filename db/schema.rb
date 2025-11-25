@@ -10,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_11_14_073343) do
+ActiveRecord::Schema.define(version: 2025_11_25_172242) do
+
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -45,6 +46,11 @@ ActiveRecord::Schema.define(version: 2025_11_14_073343) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["email"], name: "index_admins_on_email", unique: true
@@ -81,7 +87,26 @@ ActiveRecord::Schema.define(version: 2025_11_14_073343) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["community_id"], name: "index_community_members_on_community_id"
+    t.index ["user_id", "community_id"], name: "index_community_members_on_user_id_and_community_id", unique: true
     t.index ["user_id"], name: "index_community_members_on_user_id"
+  end
+
+  create_table "events", force: :cascade do |t|
+    t.integer "community_id", null: false
+    t.integer "organizer_id", null: false
+    t.string "title", null: false
+    t.text "description", null: false
+    t.string "meeting_place", null: false
+    t.string "destination", null: false
+    t.datetime "start_at", null: false
+    t.integer "max_participants"
+    t.integer "pace_required", default: 0, null: false
+    t.integer "status", default: 0, null: false
+    t.boolean "is_deleted", default: false, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["community_id"], name: "index_events_on_community_id"
+    t.index ["organizer_id"], name: "index_events_on_organizer_id"
   end
 
   create_table "follows", force: :cascade do |t|
@@ -104,11 +129,23 @@ ActiveRecord::Schema.define(version: 2025_11_14_073343) do
     t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
+  create_table "participations", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "event_id", null: false
+    t.integer "status", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["event_id"], name: "index_participations_on_event_id"
+    t.index ["user_id", "event_id"], name: "index_participations_on_user_id_and_event_id", unique: true
+    t.index ["user_id"], name: "index_participations_on_user_id"
+  end
+
   create_table "post_tags", force: :cascade do |t|
     t.integer "post_id", null: false
     t.integer "tag_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["post_id", "tag_id"], name: "index_post_tags_on_post_id_and_tag_id", unique: true
     t.index ["post_id"], name: "index_post_tags_on_post_id"
     t.index ["tag_id"], name: "index_post_tags_on_tag_id"
   end
@@ -131,6 +168,7 @@ ActiveRecord::Schema.define(version: 2025_11_14_073343) do
     t.boolean "is_deleted", default: false, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
   create_table "users", force: :cascade do |t|
@@ -150,6 +188,7 @@ ActiveRecord::Schema.define(version: 2025_11_14_073343) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["name"], name: "index_users_on_name", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
@@ -160,10 +199,14 @@ ActiveRecord::Schema.define(version: 2025_11_14_073343) do
   add_foreign_key "communities", "users", column: "owner_id"
   add_foreign_key "community_members", "communities"
   add_foreign_key "community_members", "users"
+  add_foreign_key "events", "communities"
+  add_foreign_key "events", "users", column: "organizer_id"
   add_foreign_key "follows", "users", column: "followed_id"
   add_foreign_key "follows", "users", column: "follower_id"
   add_foreign_key "likes", "posts"
   add_foreign_key "likes", "users"
+  add_foreign_key "participations", "events"
+  add_foreign_key "participations", "users"
   add_foreign_key "post_tags", "posts"
   add_foreign_key "post_tags", "tags"
   add_foreign_key "posts", "users"
