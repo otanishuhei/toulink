@@ -9,6 +9,9 @@ class User < ApplicationRecord
   has_many :owned_communities, class_name: "Community", foreign_key: "owner_id", dependent: :destroy
   has_many :community_members, dependent: :destroy
   has_many :communities, through: :community_members
+  # イベント
+  has_many :organized_events, class_name: "Event", foreign_key: "organizer_id", dependent: :destroy
+  has_many :participations, dependent: :destroy
   # フォロー機能
   has_many :relationships, class_name: "Follow", foreign_key: "follower_id", dependent: :destroy
   has_many :followings, through: :relationships, source: :followed

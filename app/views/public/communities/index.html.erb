@@ -1,2 +1,29 @@
-<h1>Public::Communities#index</h1>
-<p>Find me in app/views/public/communities/index.html.erb</p>
+<div class="container my-5">
+  <h2 class="text-center mb-4">コミュニティ一覧</h2>
+  
+  <%= link_to "コミュニティを作成する", new_community_path, class: "btn btn-primary mb-4" %>
+
+  <div class="row">
+    <% @communities.each do |community| %>
+      <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card h-100 shadow-sm">
+          <% if community.community_image.attached? %>
+            <%= image_tag community.community_image.variant(resize_to_limit: [300, 200]), class: "card-img-top", style: "object-fit: cover; height: 150px;" %>
+          <% else %>
+            <div class="text-center bg-light py-5" style="height: 150px;">
+              <i class="fas fa-users fa-3x text-muted"></i>
+            </div>
+          <% end %>
+          <div class="card-body">
+            <h5 class="card-title"><%= link_to community.name, community_path(community), class: "text-decoration-none" %></h5>
+            <p class="card-text text-muted small mb-2"><%= truncate(community.description, length: 50) %></p>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge badge-secondary"><i class="fas fa-user-circle mr-1"></i> メンバー: <%= community.members.count %>名</span>
+              <span class="small text-success">主催者: <%= community.owner.name %></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -4,6 +4,23 @@ ja:
       role:
         member: "メンバー"
         leader: "リーダー"
+    event:
+      pace_required:
+        pace_any: "ペース不問"
+        pace_slow: "ゆっくり景色重視"
+        pace_average: "平均的"
+        pace_fast: "ハイペース"
+      status:
+        draft: "企画中（非公開）"
+        recruiting: "募集中"
+        closed: "締切"
+        finished: "開催終了"
+        suspended: "管理者停止中"
+    participation:
+      status:
+        pending: "申請中"
+        confirmed: "参加確定"
+        canceled: "キャンセル"
   activerecord:
     errors:
       messages:

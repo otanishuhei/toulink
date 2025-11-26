@@ -1,0 +1,25 @@
+<% events.each do |event| %>
+  <div class="col-md-6 mb-4">
+    <div class="card shadow-sm h-100">
+      <div class="card-body">
+        <h5 class="card-title">
+          <%= link_to event.title, community_event_path(@community, event) %>
+        </h5>
+        <p class="card-text">
+          <strong>🗓 開催日時:</strong> <%= event.start_at.strftime("%Y年%m月%d日 %H:%M") %><br>
+          <strong>📍 集合場所:</strong> <%= event.meeting_place %><br>
+          <strong>👥 定員:</strong> 
+          <% if event.max_participants.present? %>
+            <%= event.participations.confirmed.count %> / <%= event.max_participants %>名
+          <% else %>
+            定員なし
+          <% end %>
+        </p>
+        <span class="badge badge-primary"><%= event.pace_required_i18n %></span>
+        <% if user_signed_in? && event.organizer == current_user %>
+          <%= link_to "編集", edit_event_path(@community, event), class: "btn btn-sm btn-outline-info ml-2" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

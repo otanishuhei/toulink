@@ -1,0 +1,87 @@
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      
+      <h1 class="mb-4 text-center">
+        <%= @community.name %> の<br>
+        イベントを編集
+      </h1>
+      
+      <%= form_with model: @event, url: event_path(@event), method: :patch, local: true, class: "card p-4 shadow-sm" do |f| %>
+        
+        <%= render 'shared/error_messages', object: @event %>
+
+        <div class="row">
+          <%# イベント名 %>
+          <div class="form-group col-12">
+            <%= f.label :title, "イベント名 (必須)" %>
+            <%= f.text_field :title, class: "form-control", required: true %>
+          </div>
+
+          <%# イベントステータス (主催者のみが操作可能) %>
+          <div class="form-group col-12">
+            <%= f.label :status, "イベント募集ステータス" %>
+            <%# status enum を日本語化して表示 %>
+            <%= f.select :status, 
+                        Event.statuses_i18n
+                             .slice(*Event.organizer_editable_statuses)
+                             .map { |k, v| [v, k] }, 
+                        {}, # オプションは不要
+                        { class: "form-control" } %>
+            <small class="form-text text-muted">企画中→募集中にすると、一般に公開されます。</small>
+          </div>
+          
+          <%# イベント詳細 %>
+          <div class="form-group col-12">
+            <%= f.label :description, "イベント詳細・注意事項 (必須)" %>
+            <%= f.text_area :description, rows: 5, class: "form-control", required: true %>
+          </div>
+          
+          <%# 開催日時 %>
+          <div class="form-group col-12">
+            <%= f.label :start_at, "開催日時 (必須)" %>
+            <%# 現在の値を適切な形式に変換して表示 %>
+            <%= f.datetime_local_field :start_at, value: f.object.start_at.strftime("%Y-%m-%dT%H:%M"), class: "form-control", required: true %>
+          </div>
+
+          <%# 集合場所 %>
+          <div class="form-group col-md-6">
+            <%= f.label :meeting_place, "集合場所 (必須)" %>
+            <%= f.text_field :meeting_place, class: "form-control", required: true %>
+          </div>
+          
+          <%# 目的地 %>
+          <div class="form-group col-md-6">
+            <%= f.label :destination, "目的地 (必須)" %>
+            <%= f.text_field :destination, class: "form-control", required: true %>
+          </div>
+
+          <%# 走行ペース %>
+          <div class="form-group col-md-6">
+            <%= f.label :pace_required, "希望走行ペース (必須)" %>
+            <%= f.select :pace_required, 
+                        Event.pace_requireds_i18n.invert, 
+                        {}, # prompt は不要
+                        { class: "form-control", required: true } %>
+          </div>
+
+          <%# 最大参加人数 %>
+          <div class="form-group col-md-6">
+            <%= f.label :max_participants, "最大参加人数 (任意)" %>
+            <%= f.number_field :max_participants, 
+                                class: "form-control", 
+                                min: 2 %>
+            <small class="form-text text-muted">主催者を含めて、募集する人数です。</small>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-center align-items-center mt-4">
+          <%= f.submit "変更を保存する", class: "btn btn-primary btn-lg px-5 mr-3" %>
+          <%= link_to "イベント詳細", community_event_path(@community, @event), class: "btn btn-outline-secondary mr-2" %>
+          <%= link_to "コミュニティ詳細", community_path(@community), class: "btn btn-outline-secondary" %>
+        </div>
+      <% end %>
+      
+    </div>
+  </div>
+</div>

@@ -50,7 +50,7 @@ class Public::PostsController < ApplicationController
     if @post.update(post_params)
       redirect_to post_path(@post), notice: "投稿内容を更新しました。"
     else
-      render :edit, status: :unprocessable_entity
+      render :edit
     end
   end
 
@@ -66,7 +66,8 @@ class Public::PostsController < ApplicationController
     def set_post
       @post = Post.find_by(id: params[:id], is_deleted: false)
       unless @post
-        redirect_to posts_path, alert: "指定された投稿は見つかりませんでした。"
+        flash[:alert] = "指定された投稿は見つかりませんでした"
+        redirect_to posts_path and return
       end
     end
 

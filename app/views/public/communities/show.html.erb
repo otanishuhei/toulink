@@ -1,2 +1,156 @@
-<h1>Public::Communities#show</h1>
-<p>Find me in app/views/public/communities/show.html.erb</p>
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      
+      <div class="d-flex align-items-center mb-4">
+        <% if @community.community_image.attached? %>
+          <%= image_tag @community.community_image.variant(resize_to_limit: [100, 100]), class: "rounded-circle mr-3", style: "width: 80px; height: 80px; object-fit: cover;" %>
+        <% else %>
+          <div class="rounded-circle bg-light d-flex align-items-center justify-content-center mr-3" style="width: 80px; height: 80px;">
+            <i class="fas fa-users fa-2x text-muted"></i>
+          </div>
+        <% end %>
+        <div>
+          <h2 class="mb-0"><%= @community.name %></h2>
+          <small class="text-muted">リーダー： <%= @community.owner.name %></small>
+        </div>
+      </div>
+      
+      <div class="card shadow-sm p-4 mb-4">
+        <h4 class="card-title mb-3">コミュニティについて</h4>
+        <p class="card-text"><%= safe_join(@community.description.split("\n"), tag(:br)) %></p>
+        <hr>
+        <p class="mb-0"><strong>メンバー数:</strong> <%= @community.members.count %>名</p>
+        <p><strong>活動状況:</strong> <%= @community.is_active? ? "活動中" : "非活動中" %></p>
+      </div>
+
+      <% if user_signed_in? %>
+        <div class="d-flex align-items-center mb-4">
+          <% if @membership.present? %>
+            <% if @membership.leader? %>
+              <span class="ml-4">自分のステータス：</span>
+              <span class="badge badge-pill badge-danger p-2"><i class="fas fa-crown"></i> リーダー</span>
+              <div class="ml-auto mr-4">
+                <%= link_to "コミュニティ設定", edit_community_path(@community), class: "btn btn-info" %>
+              </div>
+            <% else %>
+              <span class="ml-4">自分のステータス：</span>
+              <span class="badge badge-pill badge-success p-2">メンバー</span>
+              <div class="ml-auto mr-4">
+                <%= button_to "脱退する",
+                              community_community_members_path(@community),
+                              method: :delete,
+                              data: { confirm: "本当に脱退しますか？" },
+                              class: "btn btn-danger" %>
+              </div>
+            <% end %>
+          <% else %>
+            <div class="ml-auto mr-4">
+              <%= button_to "参加する",
+                            community_community_members_path(@community),
+                            method: :post,
+                            class: "btn btn-success" %>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="d-flex">
+          <div class="ml-auto mr-4">
+            <%= link_to "参加するにはログイン", new_user_session_path, class: "btn btn-primary" %>
+          </div>
+        </div>
+      <% end %>
+
+      <% if @membership.try(:leader?) %>
+        <div class="d-flex align-items-center mt-5 mb-3">
+          <h3><i class="fas fa-edit"></i> 企画中のイベント</h3>
+          <%= link_to "イベントを企画する", new_community_event_path(@community), class: "btn btn-outline-primary ml-4" %>
+        </div>
+        <% if @draft_events.present? %>
+          <div class="row">
+            <%= render 'events_list', events: @draft_events %>
+          </div>
+          <div class="d-flex justify-content-center mt-3">
+            <%= paginate @draft_events, param_name: :draft_page %>
+          </div>
+        <% else %>
+          <div class="alert alert-info text-center" role="alert">
+            現在、企画中のイベントはありません。
+          </div>
+        <% end %>
+      <% end %>
+
+      <h3 class="mt-5 mb-3"><i class="fas fa-bullhorn"></i> 募集中イベント</h3>
+      <% if @recruiting_events.present? %>
+        <div class="row">
+          <%= render 'events_list', events: @recruiting_events %>
+        </div>
+        <div class="d-flex justify-content-center mt-3">
+          <%= paginate @recruiting_events, param_name: :recruiting_page %>
+        </div>
+      <% else %>
+        <div class="alert alert-secondary text-center" role="alert">
+          現在、募集中のイベントはありません。
+        </div>
+      <% end %>
+
+      <h3 class="mt-5 mb-3"><i class="fas fa-user-lock"></i> 募集締切イベント</h3>
+      <% if @closed_events.present? %>
+        <div class="row">
+          <%= render 'events_list', events: @closed_events %>
+        </div>
+        <div class="d-flex justify-content-center mt-3">
+          <%= paginate @closed_events, param_name: :closed_page %>
+        </div>
+      <% else %>
+        <p class="text-muted">現在、募集締切イベントはありません。</p>
+      <% end %>
+
+      <h3 class="mt-5 mb-3"><i class="fas fa-flag-checkered"></i> 終了済みイベント</h3>
+      <% if @finished_events.present? %>
+        <div class="row">
+          <%= render 'events_list', events: @finished_events %>
+        </div>
+        <div class="d-flex justify-content-center mt-3">
+          <%= paginate @finished_events, param_name: :finished_page %>
+        </div>
+      <% else %>
+        <p class="text-muted">まだ終了済みのイベントはありません。</p>
+      <% end %>
+
+      <hr>
+
+      <h4 class="mt-5 mb-3">メンバー一覧</h4>
+      <table class="table">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">名前</th>
+            <th scope="col">役割</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @community_members.each do |member| %>
+            <tr>
+              <td><%= member.user.name %></td>
+              <td>
+                <% case member.role %>
+                <% when "leader" %>
+                  <span class="badge badge-danger">リーダー</span>
+                <% when "member" %>
+                  <span class="badge badge-success">メンバー</span>
+                <% else %>
+                  <span class="badge badge-secondary">不明</span>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+      <div class="text-center mt-5">
+        <%= link_to "コミュニティ一覧に戻る", communities_path, class: "btn btn-outline-secondary px-4" %>
+      </div>
+      
+    </div>
+  </div>
+</div>

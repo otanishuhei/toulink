@@ -1,0 +1,81 @@
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      
+      <h1 class="mb-4 text-center">
+        <%= @community.name %> で<br>
+        イベントを企画する
+      </h1>
+      
+      <%= form_with model: [@community, @event], url: community_events_path(@community), local: true, class: "card p-4 shadow-sm" do |f| %>
+        
+        <%# エラーメッセージの表示 %>
+        <%= render 'shared/error_messages', object: @event %>
+
+        <div class="row">
+          <%# イベント名 %>
+          <div class="form-group col-12">
+            <%= f.label :title, "イベント名 (必須)" %>
+            <%= f.text_field :title, class: "form-control", placeholder: "例: 絶景！富士山一周ツーリング", required: true %>
+          </div>
+
+          <%# イベント詳細 %>
+          <div class="form-group col-12">
+            <%= f.label :description, "イベント詳細・注意事項 (必須)" %>
+            <%= f.text_area :description, rows: 5, class: "form-control", placeholder: "集合時間、目的、イベントの雰囲気などを詳しく記入してください。", required: true %>
+          </div>
+          
+          <%# 開催日時 %>
+          <div class="form-group col-12">
+            <%= f.label :start_at, "開催日時 (必須)" %>
+            <%# datetime_local_field を使用して、日付と時間を一つの入力欄で扱えるようにします %>
+            <%= f.datetime_local_field :start_at, class: "form-control", required: true %>
+          </div>
+
+          <%# 集合場所 %>
+          <div class="form-group col-md-6">
+            <%= f.label :meeting_place, "集合場所 (必須)" %>
+            <%= f.text_field :meeting_place, class: "form-control", placeholder: "例: 〇〇サービスエリア（上り）", required: true %>
+          </div>
+          
+          <%# 目的地 %>
+          <div class="form-group col-md-6">
+            <%= f.label :destination, "目的地 (必須)" %>
+            <%= f.text_field :destination, class: "form-control", placeholder: "例: 富士山五合目", required: true %>
+          </div>
+
+          <%# 走行ペース %>
+          <div class="form-group col-md-6">
+            <%= f.label :pace_required, "希望走行ペース (必須)" %>
+            <%# Eventモデルのenumを日本語化して表示（enum_helpを想定） %>
+            <%= f.select :pace_required, 
+                        Event.pace_requireds_i18n.invert, 
+                        { prompt: "選択してください" }, 
+                        { class: "form-control", required: true } %>
+          </div>
+
+          <%# 最大参加人数 %>
+          <div class="form-group col-md-6">
+            <%= f.label :max_participants, "最大参加人数 (任意)" %>
+            <%= f.number_field :max_participants, 
+                                class: "form-control", 
+                                placeholder: "定員を設定しない場合は空欄", 
+                                min: 2 %>
+            <small class="form-text text-muted">主催者を含めて、募集する人数です。</small>
+          </div>
+        </div>
+
+        <span class="alert alert-warning font-weight-bold text-center">
+          ※イベントを登録すると、まずマイページの「企画中のイベント」に保存されます。<br>
+          確認が完了したら、「編集」よりステータスを「募集中」に変更し公開してください。
+        </span>
+
+        <div class="d-flex justify-content-center mt-4">
+          <%= f.submit "イベントを登録する", class: "btn btn-primary btn-lg px-5 mr-3" %>
+          <%= link_to "キャンセル", community_path(@community), class: "btn btn-outline-secondary btn-lg px-5" %>
+        </div>
+      <% end %>
+      
+    </div>
+  </div>
+</div>
