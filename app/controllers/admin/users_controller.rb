@@ -4,7 +4,6 @@ class Admin::UsersController < ApplicationController
 
   def index
     @users = User.all.order(created_at: :desc).page(params[:page]).per(10)
-
   end
 
   def show
@@ -21,11 +20,11 @@ class Admin::UsersController < ApplicationController
   end
 
   private
-  def set_user
-    @user = User.find_by(id: params[:id])
-    unless @user
-      flash[:alert] = "指定された会員は見つかりませんでした"
-      redirect_to admin_users_path and return
+    def set_user
+      @user = User.find_by(id: params[:id])
+      unless @user
+        flash[:alert] = "指定された会員は見つかりませんでした"
+        redirect_to admin_users_path and return
+      end
     end
-  end
 end

@@ -30,11 +30,11 @@ class Admin::EventsController < ApplicationController
   end
 
   private
-  def set_event
-    @event = Event.find_by(id: params[:id])
-    unless @event
-      flash[:alert] = "指定されたイベントは見つかりませんでした。"
-      redirect_to admin_events_path and return
+    def set_event
+      @event = Event.find_by(id: params[:id])
+      unless @event
+        flash[:alert] = "指定されたイベントは見つかりませんでした。"
+        redirect_to admin_events_path and return
+      end
     end
-  end
 end

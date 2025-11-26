@@ -20,11 +20,11 @@ class Admin::CommunitiesController < ApplicationController
   end
 
   private
-  def set_community
-    @community = Community.find_by(id: params[:id])
-    unless @community
-      flash[:alert] = "指定されたコミュニティは見つかりませんでした"
-      redirect_to admin_communities_path and return
+    def set_community
+      @community = Community.find_by(id: params[:id])
+      unless @community
+        flash[:alert] = "指定されたコミュニティは見つかりませんでした"
+        redirect_to admin_communities_path and return
+      end
     end
-  end
 end

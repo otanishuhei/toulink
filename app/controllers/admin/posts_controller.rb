@@ -20,11 +20,11 @@ class Admin::PostsController < ApplicationController
   end
 
   private
-  def set_post
-    @post = Post.find_by(id: params[:id])
-    unless @post
-      flash[:alert] = "指定された投稿は見つかりませんでした"
-      redirect_to admin_posts_path and return
+    def set_post
+      @post = Post.find_by(id: params[:id])
+      unless @post
+        flash[:alert] = "指定された投稿は見つかりませんでした"
+        redirect_to admin_posts_path and return
+      end
     end
-  end
 end

@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
   namespace :admin do
-    get 'events/index'
-    get 'events/show'
-    get 'events/update'
+    get "events/index"
+    get "events/show"
+    get "events/update"
   end
   # Devise認証（管理者/ユーザー）
   devise_for :admin, skip: [:registrations, :passwords], controllers: {

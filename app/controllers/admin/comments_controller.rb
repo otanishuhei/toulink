@@ -18,11 +18,11 @@ class Admin::CommentsController < ApplicationController
   end
 
   private
-  def set_comment
-    @comment = Comment.find_by(id: params[:id])
-    unless @comment
-      flash[:alert] = "指定されたコメントは見つかりませんでした"
-      redirect_to admin_comments_path and return
+    def set_comment
+      @comment = Comment.find_by(id: params[:id])
+      unless @comment
+        flash[:alert] = "指定されたコメントは見つかりませんでした"
+        redirect_to admin_comments_path and return
+      end
     end
-  end
 end
