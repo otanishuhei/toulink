@@ -1,2 +1,53 @@
-<h1>Admin::Posts#index</h1>
-<p>Find me in app/views/admin/posts/index.html.erb</p>
+<div class="container my-5">
+  <h1 class="mb-4">投稿管理一覧</h1>
+  <hr>
+
+  <% if @posts.present? %>
+    <table class="table table-hover table-striped text-center">
+      <thead class="thead-dark">
+        <tr>
+          <th>ID</th>
+          <th>タイトル</th>
+          <th>投稿者</th>
+          <th>コメント数</th>
+          <th>いいね数</th>
+          <th><%= Post.human_attribute_name(:is_published) %></th>
+          <th>詳細</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @posts.each do |post| %>
+          <tr>
+            <td><%= post.id %></td>
+            <td><%= post.title %></td>
+            <%# user アソシエーションがあると仮定 %>
+            <td><%= link_to (post.user.name rescue '---'), admin_user_path(post.user) rescue '#' %></td>
+            <%# comments, likes アソシエーションがあると仮定 %>
+            <td><%= post.comments.count rescue 'N/A' %></td> 
+            <td><%= post.likes.count rescue 'N/A' %></td>
+            <td>
+              <% if post.is_published %>
+                <span class="badge badge-success">公開中</span>
+              <% else %>
+                <span class="badge badge-danger">非公開</span>
+              <% end %>
+            </td>
+            <td><%= link_to "詳細", admin_post_path(post), class: "btn btn-sm btn-info" %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <%# ページネーション %>
+    <div class="d-flex justify-content-center">
+      <%= paginate @posts %>
+    </div>
+
+  <% else %>
+    <%# 投稿が1件も存在しない場合に表示されるメッセージ %>
+    <div class="alert alert-info text-center" role="alert">
+      <strong>現在、作成された投稿はありません。</strong>
+      <p class="mt-2 mb-0">新しく投稿されるまでお待ちください。</p>
+    </div>
+  <% end %>
+</div>

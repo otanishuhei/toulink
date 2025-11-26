@@ -2,8 +2,14 @@
   <nav class="navbar navbar-dark bg-dark sticky-top">
     <div class="container">
 
-      <%= link_to root_path, class: "navbar-brand text-white" do %>
-        <i class="fa-solid fa-motorcycle mr-1"></i><strong>Toulink</strong>
+      <% if admin_signed_in? %>
+        <%= link_to admin_root_path, class: "navbar-brand text-white" do %>
+          <i class="fa-solid fa-motorcycle mr-1"></i><strong>Toulink</strong>
+        <% end %>
+      <% else %>
+        <%= link_to root_path, class: "navbar-brand text-white" do %>
+          <i class="fa-solid fa-motorcycle mr-1"></i><strong>Toulink</strong>
+        <% end %>
       <% end %>
 
       <% if user_signed_in? %>
@@ -20,22 +26,25 @@
         <ul class="navbar-nav ml-auto">
           <% if admin_signed_in? %>
             <li class="nav-item">
-              <s><a href="#" class="nav-link text-white">ダッシュボード</a></s>
+              <%= link_to "ダッシュボード", admin_root_path, class: "nav-link text-white" %>
             </li>
             <li class="nav-item">
-              <s><a href="#" class="nav-link text-white">会員管理</a></s>
+              <%= link_to "会員管理", admin_users_path, class: "nav-link text-white" %>
             </li>
             <li class="nav-item">
-              <s><a href="#" class="nav-link text-white">投稿管理</a></s>
+              <%= link_to "投稿管理", admin_posts_path, class: "nav-link text-white" %>
             </li>
             <li class="nav-item">
-              <s><a href="#" class="nav-link text-white">コメント管理</a></s>
+              <%= link_to "コメント管理", admin_comments_path, class: "nav-link text-white" %>
             </li>
             <li class="nav-item">
-              <s><a href="#" class="nav-link text-white">コミュニティ管理</a></s>
+              <%= link_to "コミュニティ管理", admin_communities_path, class: "nav-link text-white" %>
             </li>
             <li class="nav-item">
-              <s><a href="#" class="nav-link text-white">タグ管理</a></s>
+              <%= link_to "イベント管理", admin_events_path, class: "nav-link text-white" %>
+            </li>
+            <li class="nav-item">
+              <%#= link_to "タグ管理", admin_tags_path, class: "nav-link text-white" %>
             </li>
             <li class="nav-item">
               <%= link_to "ログアウト", destroy_admin_session_path, method: :delete, class: "nav-link text-white" %>

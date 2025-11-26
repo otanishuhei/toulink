@@ -1,0 +1,56 @@
+<div class="container my-5">
+  <h1 class="mb-4">イベント管理一覧</h1>
+  <hr>
+
+  <% if @events.present? %>
+    <table class="table table-hover table-striped text-center">
+      <thead class="thead-dark">
+        <tr>
+          <th>ID</th>
+          <th>イベント名</th>
+          <th>主催者</th>
+          <th>開催日時</th>
+          <th>参加人数</th>
+          <th>ステータス</th>
+          <th>詳細</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @events.each do |event| %>
+          <tr>
+            <td><%= event.id %></td>
+            <td><%= event.title %></td>
+            <%# user(organizer) アソシエーションを想定 (Userモデルで has_many :organized_events なので event.organizer で取得可能と仮定) %>
+            <td><%= link_to (event.organizer.name rescue '退会済ユーザー'), admin_user_path(event.organizer) rescue '#' %></td>
+            <td><%= event.start_at.strftime("%Y/%m/%d %H:%M") rescue '未定' %></td>
+            <%# participations アソシエーションを想定 %>
+            <td><%= event.participations.count rescue 0 %>人</td>
+            <td>
+              <%# status の日本語化 (enum_help) を使用 %>
+              <% if event.suspended? %>
+                <span class="badge badge-danger"><%= event.status_i18n %></span>
+              <% elsif event.finished? %>
+                <span class="badge badge-secondary"><%= event.status_i18n %></span>
+              <% else %>
+                <span class="badge badge-success"><%= event.status_i18n %></span>
+              <% end %>
+            </td>
+            <td><%= link_to "詳細", admin_event_path(event), class: "btn btn-sm btn-info" %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <%# ページネーション %>
+    <div class="d-flex justify-content-center">
+      <%= paginate @events %>
+    </div>
+
+  <% else %>
+    <%# イベントが1件も存在しない場合に表示されるメッセージ %>
+    <div class="alert alert-info text-center" role="alert">
+      <strong>現在、作成されたイベントはありません。</strong>
+      <p class="mt-2 mb-0">新しいイベント作成されるまでお待ちください。</p>
+    </div>
+  <% end %>
+</div>

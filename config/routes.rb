@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  namespace :admin do
+    get "events/index"
+    get "events/show"
+    get "events/update"
+  end
   # Devise認証（管理者/ユーザー）
   devise_for :admin, skip: [:registrations, :passwords], controllers: {
     sessions: "admin/sessions"
@@ -75,6 +80,7 @@ Rails.application.routes.draw do
     resources :posts, only: [:index, :show, :update]
     resources :comments, only: [:index, :update]
     resources :communities, only: [:index, :show, :update]
+    resources :events, only: [:index, :show, :update]
     resources :tags, only: [:index, :create, :edit, :update]
   end
 end
