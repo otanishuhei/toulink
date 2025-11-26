@@ -1,2 +1,77 @@
-<h1>Admin::Comments#index</h1>
-<p>Find me in app/views/admin/comments/index.html.erb</p>
+<div class="container my-5">
+  <h1 class="mb-4">コメント管理一覧</h1>
+  <hr>
+
+  <% if @comments.present? %>
+    <%= render 'shared/error_messages', object: @comment %>
+
+    <table class="table table-hover table-striped text-center">
+      <thead class="thead-dark">
+        <tr>
+          <th>ID</th>
+          <th>投稿ID</th>
+          <th>投稿タイトル</th>
+          <th>コメント内容</th>
+          <th>投稿者</th>
+          <th><%= Comment.human_attribute_name(:is_published) %></th>
+          <th><%= Comment.human_attribute_name(:is_deleted) %></th>
+          <th>対応</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @comments.each do |comment| %>
+          <tr>
+            <td><%= comment.id %></td>
+            <%# post アソシエーションがあると仮定 %>
+            <td><%= comment.post_id %></td>
+            <td><%= link_to (comment.post.title rescue '投稿削除済'), admin_post_path(comment.post) rescue '#' %></td>
+            <td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+              <%= comment.body %>
+            </td>
+            <%# user アソシエーションがあると仮定 %>
+            <td><%= link_to (comment.user.name rescue '退会済ユーザー'), admin_user_path(comment.user) rescue '#' %></td>
+            
+            <%# 公開ステータス %>
+            <td>
+              <% if comment.is_published %>
+                <span class="badge badge-success">公開中</span>
+              <% else %>
+                <span class="badge badge-danger">非公開</span>
+              <% end %>
+            </td>
+            
+            <%# ユーザー削除フラグ %>
+            <td>
+              <% if comment.is_deleted %>
+                <span class="badge badge-warning">ユーザー削除済</span>
+              <% else %>
+                <span class="badge badge-light">有効</span>
+              <% end %>
+            </td>
+            
+            <%# ステータス切り替えボタン %>
+            <td>
+              <%= button_to (comment.is_published ? "非公開にする" : "公開に戻す"), 
+                            admin_comment_path(comment, page: params[:page]), # ページ情報を引き継ぐ
+                            method: :patch, 
+                            data: { confirm: comment.is_published ? "このコメントを非公開にしますか？" : "このコメントを公開に戻しますか？" },
+                            class: comment.is_published ? "btn btn-sm btn-outline-danger" : "btn btn-sm btn-outline-success" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+  <%# ページネーション %>
+  <div class="d-flex justify-content-center">
+    <%= paginate @comments %>
+  </div>
+
+  <% else %>
+    <%# コメントが1件も存在しない場合に表示されるメッセージ %>
+    <div class="alert alert-info text-center" role="alert">
+      <strong>現在、投稿されたコメントはありません。</strong>
+      <p class="mt-2 mb-0">新しいコメントが投稿されるまでお待ちください。</p>
+    </div>
+  <% end %>
+</div>

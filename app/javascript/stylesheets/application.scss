@@ -1,5 +1,14 @@
 @use '~bootstrap/scss/bootstrap';
 
+.text-sm {
+  font-size: 75%;
+}
+
+.table th, .table td {
+  vertical-align: middle;
+  text-align: center;
+}
+
 /* 太めの黄色い下線 */
 .border-bottom-thick-yellow {
   display: inline-block;

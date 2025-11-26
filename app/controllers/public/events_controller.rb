@@ -1,5 +1,6 @@
 class Public::EventsController < ApplicationController
   before_action :authenticate_user!, except: [:show]
+  before_action :set_community_for_nesting, only: [:show]
   before_action :set_event, only: [:show, :edit, :update, :destroy]
   before_action :check_organizer, only: [:edit, :update, :destroy]
 
@@ -21,9 +22,6 @@ class Public::EventsController < ApplicationController
   end
 
   def show
-    @community = Community.find(params[:community_id])
-    @event = Event.find(params[:id])
-
     @confirmed_participations = @event.participations.confirmed
     @pending_participations = @event.participations.pending
 
@@ -44,17 +42,29 @@ class Public::EventsController < ApplicationController
   end
 
   def destroy
-    if @event.update(is_deleted: true, status: :suspended)
-      redirect_to community_path(@community), alert: "イベントをキャンセルしました"
+    if @event.update(is_deleted: true)
+      redirect_to community_path(@community), alert: "イベントを削除しました"
     else
-      redirect_to community_path(pcommunity, @event), alert: "イベントのキャンセルに失敗しました"
+      redirect_to community_event_path(@community, @event), alert: "イベントの削除に失敗しました"
     end
   end
 
   private
+    def set_community_for_nesting
+      @community = Community.find_by(id: params[:community_id])
+    end
+
     def set_event
-      @event = Event.find(params[:id])
+      @event = Event.find_by(id: params[:id], is_deleted: false)
+      unless @event
+        flash[:alert] = "指定されたイベントは見つかりませんでした"
+        redirect_to root_path and return
+      end
       @community = @event.community
+      unless @community
+        flash[:alert] = "イベントに紐づくコミュニティ情報が見つかりません"
+        redirect_to root_path and return
+      end
     end
 
     def check_organizer
