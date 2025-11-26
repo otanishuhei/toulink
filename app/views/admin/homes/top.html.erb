@@ -1,2 +1,60 @@
-<h1>Admin::Homes#top</h1>
-<p>Find me in app/views/admin/homes/top.html.erb</p>
+<div class="container my-5">
+  <h1 class="mb-4">管理者ダッシュボード</h1>
+  <hr>
+
+  <div class="row">
+    
+    <%# --- 会員数 --- %>
+    <div class="col-md-4 mb-4">
+      <div class="card text-white bg-primary shadow">
+        <div class="card-body">
+          <h5 class="card-title">会員数</h5>
+          <p class="card-text display-4"><%= @users_count %></p>
+          <%= link_to "会員一覧へ", admin_users_path, class: "btn btn-outline-light btn-sm mt-2" %>
+        </div>
+      </div>
+    </div>
+    
+    <%# --- 投稿数 --- %>
+    <div class="col-md-4 mb-4">
+      <div class="card text-white bg-dark shadow">
+        <div class="card-body">
+          <h5 class="card-title">投稿数</h5>
+          <p class="card-text display-4"><%= @posts_count %></p>
+          <%= link_to "投稿一覧へ", admin_posts_path, class: "btn btn-outline-light btn-sm mt-2" %>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+      <div class="card text-white bg-secondary shadow">
+        <div class="card-body">
+          <h5 class="card-title">コメント数</h5>
+          <p class="card-text display-4"><%= @comments_count %></p>
+          <%= link_to "コメント一覧へ", admin_comments_path, class: "btn btn-outline-light btn-sm mt-2" %>
+        </div>
+      </div>
+    </div>
+
+    <%# --- コミュニティ数 --- %>
+    <div class="col-md-4 mb-4">
+      <div class="card text-white bg-info shadow">
+        <div class="card-body">
+          <h5 class="card-title">コミュニティ数</h5>
+          <p class="card-text display-4"><%= @communities_count %></p>
+          <%= link_to "コミュニティ一覧へ", admin_communities_path, class: "btn btn-outline-light btn-sm mt-2" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+      <div class="card text-white bg-warning shadow">
+        <div class="card-body">
+          <h5 class="card-title">イベント数</h5>
+          <p class="card-text display-4"><%= @events_count %></p>
+          <%= link_to "イベント一覧へ", admin_events_path, class: "btn btn-outline-light btn-sm mt-2" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

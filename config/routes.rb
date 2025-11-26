@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  namespace :admin do
+    get "events/index"
+    get "events/show"
+    get "events/update"
+  end
   # Devise認証（管理者/ユーザー）
   devise_for :admin, skip: [:registrations, :passwords], controllers: {
     sessions: "admin/sessions"
@@ -48,11 +53,19 @@ Rails.application.routes.draw do
     # コメントの論理削除
     patch "comments/:id/withdraw" => "comments#withdraw", as: "comment_withdraw"
 
-    # Communities（コミュニティ）
+    # Communities（コミュニティ） / Event（イベント）
     resources :communities do
+      resources :events, only: [:new, :create, :show]
       resource :community_members, only: [:create, :destroy]
       get "confirm_delete" => "communities#confirm_delete", on: :member
       patch "withdraw" => "communities#withdraw", on: :member
+    end
+    resources :events, only: [:edit, :update, :destroy]
+    resources :participations, only: [:create, :destroy] do
+      member do
+        patch :approve
+        patch :reject
+      end
     end
 
     # タグ検索
@@ -67,6 +80,7 @@ Rails.application.routes.draw do
     resources :posts, only: [:index, :show, :update]
     resources :comments, only: [:index, :update]
     resources :communities, only: [:index, :show, :update]
+    resources :events, only: [:index, :show, :update]
     resources :tags, only: [:index, :create, :edit, :update]
   end
 end

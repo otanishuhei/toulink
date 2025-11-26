@@ -9,8 +9,7 @@
         <% @popular_communities.each do |community| %>
           <div class="col-md-6 col-lg-3 mb-4">
             <div class="card shadow-sm h-100">
-              <%# 仮リンク %>
-              <%= link_to "#", class: "text-decoration-none text-dark" do %>
+              <%= link_to community_path(community), class: "text-decoration-none text-dark" do %>
                 <div class="card-body p-2 text-center">
                   <h5 class="card-title font-weight-bold text-success mb-1 small"><%= truncate(community.name, length: 20) %></h5>
                   <p class="card-text text-muted small"><%= community.community_members.count %> メンバー</p>
@@ -18,7 +17,7 @@
               <% end %>
             </div>
           </div>
-        <% end %>
+        -<% end %>
       </div>
 
       <h3 class="mb-4 border-bottom pb-2 text-primary font-weight-bold">
@@ -45,23 +44,21 @@
 
     <div class="col-lg-3">
       <div class="card shadow-sm p-3 sticky-top" style="top: 20px;">
-        <h5 class="font-weight-bold pb-2">メニュー（仮）</h5>
+        <h5 class="font-weight-bold pb-2">メニュー</h5>
         <div class="list-group list-group-flush small">
           <% if current_user %>
             <%= link_to mypage_path, class: 'list-group-item list-group-item-action' do %>
               <i class="fa-solid fa-id-card mr-2"></i>マイページへ
             <% end %>
-          <% end %>
-          <%# 仮リンク %>
-          <%= link_to "#", class: 'list-group-item list-group-item-action' do %>
-            <s><i class="fa-solid fa-users mr-2"></i>会員一覧を見る</s>
+            <%= link_to users_path, class: 'list-group-item list-group-item-action' do %>
+              <i class="fa-solid fa-users mr-2"></i>会員一覧を見る
+            <% end %>
           <% end %>
           <%= link_to posts_path, class: 'list-group-item list-group-item-action' do %>
             <i class="fa-regular fa-clipboard mr-2"></i>投稿一覧を見る
           <% end %>
-          <%# 仮リンク %>
-          <%= link_to "#", class: 'list-group-item list-group-item-action' do %>
-            <s><i class="fa-solid fa-earth-asia mr-2"></i>コミュニティを見る</s>
+          <%= link_to communities_path, class: 'list-group-item list-group-item-action' do %>
+            <i class="fa-solid fa-earth-asia mr-2"></i>コミュニティを見る
           <% end %>
         </div>
       </div>

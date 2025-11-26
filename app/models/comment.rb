@@ -11,7 +11,7 @@ class Comment < ApplicationRecord
   scope :deleted, -> { where(is_deleted: true) }
 
   ## -- バリデーション --
-  validates :body, presence: true, length: { maximum: 300 }
+  validates :body, presence: true, length: { maximum: 200 }
   # 公開状態・論理削除ステータスの必須確認
   validates :is_published, inclusion: { in: [true, false] }
   validates :is_deleted, inclusion: { in: [true, false] }

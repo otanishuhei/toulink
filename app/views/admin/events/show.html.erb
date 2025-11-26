@@ -1,0 +1,63 @@
+<div class="container my-5">
+  <h1 class="mb-4">イベント詳細情報 (#<%= @event.id %>)</h1>
+  <hr>
+  
+  <%= render 'shared/error_messages', object: @event %>
+  
+  <div class="card shadow p-4 mb-4">
+    <h3 class="card-title mb-3">基本情報</h3>
+    <table class="table table-bordered">
+      <tbody>
+        <tr>
+          <th style="width: 20%;">イベント名</th>
+          <td><%= @event.title %></td>
+        </tr>
+        <tr>
+          <th>主催者</th>
+          <td><%= link_to (@event.organizer.name rescue '退会済ユーザー'), admin_user_path(@event.organizer) rescue '#' %></td>
+        </tr>
+        <tr>
+          <th>コミュニティ</th>
+          <td><%= link_to (@event.community.name rescue '削除済コミュニティ'), admin_community_path(@event.community) rescue '#' %></td>
+        </tr>
+        <tr>
+          <th>詳細説明</th>
+          <td><%= simple_format(@event.description) %></td>
+        </tr>
+        <tr>
+          <th>開催日時</th>
+          <td><%= @event.start_at.strftime("%Y年%m月%d日 %H:%M") rescue '未定' %></td>
+        </tr>
+        <tr>
+          <th>集合場所</th>
+          <td><%= @event.meeting_place %></td>
+        </tr>
+        <tr>
+          <th>目的地</th>
+          <td><%= @event.destination %></td>
+        </tr>
+        <tr>
+          <th>ステータス</th>
+          <td>
+            <span class="badge badge-<%= @event.suspended? ? 'danger' : 'success' %>" style="font-size: 1rem;">
+              <%= @event.status_i18n %>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="d-flex justify-content-center mt-4">
+      <%# ステータス切り替えボタン %>
+      <%= button_to (@event.suspended? ? "停止を解除する（募集中に戻す）" : "イベントを管理者権限で停止する"), 
+                    admin_event_path(@event), 
+                    method: :patch, 
+                    data: { confirm: @event.suspended? ? "本当に停止を解除しますか？" : "このイベントを強制的に停止しますか？" },
+                    class: @event.suspended? ? "btn btn-success" : "btn btn-danger" %>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-center mt-5">
+    <%= link_to "イベント一覧に戻る", admin_events_path, class: "btn btn-outline-secondary" %>
+  </div>
+</div>

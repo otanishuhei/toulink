@@ -4,19 +4,64 @@ class Public::UsersController < ApplicationController
   before_action :ensure_correct_user, only: [:edit, :update, :unsubscribe, :withdraw]
 
   def index
-    @users = User.active.page(params[:page]).per(20)
+    @users = User.active.order(created_at: :desc).page(params[:page]).per(20)
   end
 
   def show
-    @user = User.active.find_by(id: params[:id])
-    return redirect_to users_path, alert: "このユーザーは存在しません。" unless @user
+    @user = User.find_by(id: params[:id])
+    return redirect_to users_path, alert: "このユーザーは存在しません" unless @user
 
-    @posts = @user.posts.published.order(created_at: :desc).limit(10)
+    @owned_communities = @user.owned_communities
+                              .active
+                              .includes(:owner)
+                              .order(created_at: :desc)
+                              .page(params[:owned_page])
+                              .per(4)
+    @joined_communities = Community.joins(:community_members)
+                                  .where(community_members: { user_id: @user.id })
+                                  .where.not(owner_id: @user.id)
+                                  .active
+                                  .distinct
+                                  .order(created_at: :desc)
+                                  .page(params[:joined_page])
+                                  .per(4)
+    @created_events = @user.organized_events
+                           .where.not(status: [:draft, :suspended])
+                           .order(start_at: :desc)
+                           .page(params[:events_page])
+                           .per(4)
+    @posts = @user.posts
+                  .published
+                  .order(created_at: :desc)
+                  .page(params[:post_page])
+                  .per(6)
   end
 
   def mypage
     @user = current_user
-    @posts = @user.posts.order(created_at: :desc)
+    @joined_communities = Community.joined_by(@user.id)
+                                   .where(community_members: { user_id: @user.id })
+                                   .active
+                                   .order(created_at: :desc)
+                                   .page(params[:community_page])
+                                   .per(4)
+    @draft_events = @user.organized_events
+                         .where(status: :draft)
+                         .order(start_at: :asc)
+                         .page(params[:event_page])
+                         .per(4)
+    @participating_events = Event.joins(:participations)
+                                 .where(participations: { user_id: @user.id })
+                                 .where(is_deleted: false)
+                                 .where.not(status: [:draft, :suspended])
+                                 .order(start_at: :asc)
+                                 .page(params[:participation_page])
+                                 .per(4)
+    @posts = @user.posts
+                  .published
+                  .order(created_at: :desc)
+                  .page(params[:post_page])
+                  .per(6)
   end
 
   def edit

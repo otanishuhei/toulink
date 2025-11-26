@@ -1,0 +1,136 @@
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      
+      <h1 class="mb-4 text-center"><%= @event.title %></h1>
+      
+      <div class="alert alert-info d-flex align-items-center mb-4">
+        <i class="fas fa-users mr-3"></i>
+        <span>主催コミュニティ: <%= link_to @community.name, community_path(@community), class: "alert-link" %></span>
+      </div>
+      
+      <div class="card shadow-sm mb-4">
+        <div class="card-body">
+          <h4 class="card-title mb-3">イベント概要</h4>
+          <table class="table table-bordered">
+            <tbody>
+              <tr>
+                <th style="width: 150px;">🗓 開催日時</th>
+                <td><%= @event.start_at.strftime("%Y年%m月%d日 %H:%M") %></td>
+              </tr>
+              <tr>
+                <th>📍 集合場所</th>
+                <td><%= @event.meeting_place %></td>
+              </tr>
+              <tr>
+                <th>🏁 目的地</th>
+                <td><%= @event.destination %></td>
+              </tr>
+              <tr>
+                <th>👤 主催者</th>
+                <td><%= link_to @event.organizer.name, user_path(@event.organizer) %></td>
+              </tr>
+              <tr>
+                <th>💨 走行ペース</th>
+                <td><span class="badge badge-primary"><%= @event.pace_required_i18n %></span></td>
+              </tr>
+              <tr>
+                <th>定員</th>
+                <td>
+                  <% if @event.max_participants.present? %>
+                    <%= @confirmed_participations.count %> / <%= @event.max_participants %> 名
+                  <% else %>
+                    定員なし
+                  <% end %>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <h5 class="mt-4">詳細</h5>
+          <p class="card-text"><%= safe_join(@event.description.split("\n"), tag(:br)) %></p>
+        </div>
+      </div>
+      
+      <% if user_signed_in? && @event.organizer != current_user %>
+        <div class="mb-4 text-center">
+          <% if @my_participation.nil? %>
+            <%# 参加申請ボタン %>
+            <%= button_to "イベントに参加を申請する", 
+                          participations_path(event_id: @event.id), 
+                          method: :post, 
+                          class: "btn btn-success btn-lg px-5" %>
+          <% elsif @my_participation.confirmed? %>
+            <%# 参加確定後のキャンセルボタン %>
+            <p class="text-success mb-2"><i class="fas fa-check-circle"></i> **参加確定済みです**</p>
+            <%= button_to "キャンセルする",
+                          participation_path(@my_participation), 
+                          method: :delete, 
+                          data: { confirm: "参加をキャンセルしますか？" }, 
+                          class: "btn btn-outline-danger" %>
+          <% elsif @my_participation.pending? %>
+            <%# 申請中（キャンセルも可能にするか否かは要検討だが、ここでは許可） %>
+            <p class="text-warning mb-2"><i class="fas fa-clock"></i> **参加申請中です** (主催者の承認待ち)</p>
+            <%= button_to "申請を取り消す",
+                          participation_path(@my_participation), 
+                          method: :delete, 
+                          data: { confirm: "参加申請を取り消しますか？" }, 
+                          class: "btn btn-outline-secondary" %>
+          <% end %>
+        </div>
+      <% end %>
+
+      <% if @event.organizer == current_user %>
+        <div class="d-flex justify-content-center mb-4">
+          <%= link_to "イベントを編集", edit_event_path(@event), class: "btn btn-primary mr-2" %>
+          <%= button_to "イベントを削除", event_path(@event), method: :delete, data: { confirm: "本当にこのイベントをキャンセル（非公開）にしますか？" }, class: "btn btn-danger" %>
+        </div>
+      <% end %>
+      
+      <hr>
+
+      <h4 class="mt-5 mb-3"><i class="fas fa-check-circle text-success"></i> 参加確定者 (<%= @confirmed_participations.count %> 名)</h4>
+      <% if @confirmed_participations.any? %>
+        <ul class="list-group mb-4">
+          <% @confirmed_participations.each do |p| %>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <%= link_to p.user.name, user_path(p.user) %>
+              <% if p.user == @event.organizer %>
+                <span class="badge badge-danger badge-pill">主催者</span>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="text-muted">まだ参加確定者はいません。</p>
+      <% end %>
+
+      <% if @event.organizer == current_user && @pending_participations.any? %>
+        <h4 class="mt-5 mb-3"><i class="fas fa-clock text-warning"></i> 参加申請中 (<%= @pending_participations.count %> 名)</h4>
+        <ul class="list-group mb-4">
+          <% @pending_participations.each do |p| %>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <%= link_to p.user.name, user_path(p.user) %>
+              <div class="d-flex align-items-center">
+                <%= button_to "承認", approve_participation_path(p), 
+                              method: :patch, 
+                              data: { confirm: "#{p.user.name}さんの参加を承認しますか？" }, 
+                              class: "btn btn-sm btn-success mr-2" %>
+                              
+                <%= button_to "却下", reject_participation_path(p), 
+                              method: :patch, 
+                              data: { confirm: "#{p.user.name}さんの参加を却下しますか？" }, 
+                              class: "btn btn-sm btn-danger" %>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
+      
+      <div class="text-center mt-5">
+        <%= link_to "コミュニティ詳細に戻る", community_path(@community), class: "btn btn-outline-secondary px-4" %>
+      </div>
+      
+    </div>
+  </div>
+</div>

@@ -1,3 +1,5 @@
 <h1>投稿編集</h1>
 <%= render 'form', post: @post %>
-<%= link_to "投稿詳細に戻る", post_path(@post), class: "btn btn-secondary mt-3" %>
+<div class="text-center mt-4">
+  <%= link_to "投稿詳細に戻る", post_path(@post), class: "btn btn-outline-secondary px-4" %>
+</div>

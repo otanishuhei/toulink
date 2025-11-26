@@ -1,0 +1,43 @@
+<div id="comment_area_<%= post.id %>">
+  <div class="card shadow-sm my-5">
+    <div class="card-body">
+      <h4 class="card-title mb-3">コメントを投稿する</h4>
+      <% if user_signed_in? %>
+        <%= form_with(model: [post, Comment.new], url: post_comments_path(@post), local: false) do |f| %>
+          <div class="form-group mb-3">
+            <%= f.text_area :body, rows: 4, class: "form-control", placeholder: "コメント内容 (200文字まで)" %>
+          </div>
+          <%= f.submit "コメントを投稿", class: "btn btn-primary btn-block" %>
+        <% end %>
+      <% else %>
+        <p class="text-center text-muted">コメントを投稿するには <%= link_to "ログイン", new_user_session_path %> または <%= link_to "会員登録", new_user_registration_path %> が必要です。</p>
+      <% end %>
+    </div>
+  </div>
+
+  <h4 class="mb-4"><i class="fas fa-comments mr-2"></i>コメント (<%= comments.count %>件)</h4>
+
+  <% if comments.any? %>
+    <div class="list-group border rounded shadow-sm">
+      <% comments.each do |comment| %>
+        <div class="list-group-item">
+          <div class="d-flex w-100 justify-content-between align-items-center mb-1">
+            <strong><%= comment.user&.name || "退会済みユーザー" %></strong>
+            <small class="text-muted"><%= l(comment.created_at, format: :short) %></small>
+          </div>
+          <p class="mb-2"><%= comment.body.gsub(/\r?\n/, "<br>").html_safe %></p>
+
+          <% if user_signed_in? && comment.user == current_user %>
+            <%= link_to "削除", comment_withdraw_path(comment),
+                        data: { method: :patch, confirm: "本当にこのコメントを削除しますか？" },
+                        class: "btn btn-sm btn-outline-danger" %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="alert alert-info text-center" role="alert">
+      コメントはまだありません。
+    </div>
+  <% end %>
+</div>

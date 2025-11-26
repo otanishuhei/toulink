@@ -5,10 +5,28 @@ class Public::PostsController < ApplicationController
 
   def index
     @posts = Post.published.order(created_at: :desc)
-    @posts = Post.published.order(created_at: :desc).page(params[:page])
+
+    # 検索内容と検索タイプを取得
+    query = params[:query].to_s.strip
+    search_type = params[:search_type]
+
+    # 検索内容が入力されている場合のみ検索を実行
+    if query.present?
+      case search_type
+      when "tag"
+        @posts = @posts.by_tag_name(query)
+      else
+        @posts = @posts.search_by_query(query)
+      end
+    end
+
+    # ページネーションを適用
+    @posts = @posts.page(params[:page])
   end
 
   def show
+    @comments = @post.comments.published.includes(:user)
+    @comment = Comment.new
   end
 
   def new
@@ -17,12 +35,10 @@ class Public::PostsController < ApplicationController
 
   def create
     @post = current_user.posts.new(post_params)
-    @post.is_published = true # デフォルト設定
 
     if @post.save
       redirect_to post_path(@post), notice: "投稿が完了しました。"
     else
-      # バリデーション失敗時はnewビューを再表示 (エラーメッセージはビューで表示)
       render :new, status: :unprocessable_entity
     end
   end
@@ -34,8 +50,7 @@ class Public::PostsController < ApplicationController
     if @post.update(post_params)
       redirect_to post_path(@post), notice: "投稿内容を更新しました。"
     else
-      # バリデーション失敗時はeditビューを再表示 (エラーメッセージはビューで表示)
-      render :edit, status: :unprocessable_entity
+      render :edit
     end
   end
 
@@ -51,7 +66,8 @@ class Public::PostsController < ApplicationController
     def set_post
       @post = Post.find_by(id: params[:id], is_deleted: false)
       unless @post
-        redirect_to posts_path, alert: "指定された投稿は見つかりませんでした。"
+        flash[:alert] = "指定された投稿は見つかりませんでした"
+        redirect_to posts_path and return
       end
     end
 
