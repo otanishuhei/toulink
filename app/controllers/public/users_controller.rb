@@ -53,7 +53,7 @@ class Public::UsersController < ApplicationController
     @participating_events = Event.joins(:participations)
                                  .where(participations: { user_id: @user.id })
                                  .where(is_deleted: false)
-                                 .where.not(status: [:draft,:suspended])
+                                 .where.not(status: [:draft, :suspended])
                                  .order(start_at: :asc)
                                  .page(params[:participation_page])
                                  .per(4)

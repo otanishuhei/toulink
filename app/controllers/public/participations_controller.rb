@@ -58,19 +58,18 @@ class Public::ParticipationsController < ApplicationController
   end
 
   private
-
-  def set_participation
-    @participation = Participation.find_by(id: params[:id])
-    if @participation
-      @event = @participation.event
-    else
-      redirect_to root_path, alert: "対象の参加レコードが見つかりません"
+    def set_participation
+      @participation = Participation.find_by(id: params[:id])
+      if @participation
+        @event = @participation.event
+      else
+        redirect_to root_path, alert: "対象の参加レコードが見つかりません"
+      end
     end
-  end
 
-  def check_event_organizer
-    unless @event.organizer == current_user
-      redirect_to community_event_path(@event.community, @event), alert: "参加申請の承認・却下権限がありません"
+    def check_event_organizer
+      unless @event.organizer == current_user
+        redirect_to community_event_path(@event.community, @event), alert: "参加申請の承認・却下権限がありません"
+      end
     end
-  end
 end

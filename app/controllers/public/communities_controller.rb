@@ -79,23 +79,22 @@ class Public::CommunitiesController < ApplicationController
   end
 
   private
-
-  def set_community
-    @community = Community.find_by(id: params[:id])
-    unless @community
-      flash[:alert] = "指定されたコミュニティは見つかりませんでした"
-      redirect_to communities_path and return
+    def set_community
+      @community = Community.find_by(id: params[:id])
+      unless @community
+        flash[:alert] = "指定されたコミュニティは見つかりませんでした"
+        redirect_to communities_path and return
+      end
     end
-  end
 
-  def ensure_community_owner
-    unless @community.owner == current_user
-      flash[:alert] = "権限がありません"
-      redirect_to community_path(@community)
+    def ensure_community_owner
+      unless @community.owner == current_user
+        flash[:alert] = "権限がありません"
+        redirect_to community_path(@community)
+      end
     end
-  end
 
-  def community_params
-    params.require(:community).permit(:name, :description, :is_active, :community_image)
-  end
+    def community_params
+      params.require(:community).permit(:name, :description, :is_active, :community_image)
+    end
 end

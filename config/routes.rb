@@ -1,8 +1,4 @@
 Rails.application.routes.draw do
-  namespace :public do
-    get 'participations/create'
-    get 'participations/destroy'
-  end
   # Devise認証（管理者/ユーザー）
   devise_for :admin, skip: [:registrations, :passwords], controllers: {
     sessions: "admin/sessions"

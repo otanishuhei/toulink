@@ -24,8 +24,7 @@ class Public::CommunityMembersController < ApplicationController
   end
 
   private
-
-  def set_community
-    @community = Community.find(params[:community_id])
-  end
+    def set_community
+      @community = Community.find(params[:community_id])
+    end
 end

@@ -52,28 +52,27 @@ class Public::EventsController < ApplicationController
   end
 
   private
-
-  def set_event
-    @event = Event.find(params[:id])
-    @community = @event.community
-  end
-
-  def check_organizer
-    unless @event.organizer == current_user
-      redirect_to community_event_path(@community, @event), alert: "イベントの編集・削除権限がありません"
+    def set_event
+      @event = Event.find(params[:id])
+      @community = @event.community
     end
-  end
 
-  def event_params
-    params.require(:event).permit(
-      :title,
-      :description,
-      :meeting_place,
-      :destination,
-      :start_at,
-      :max_participants,
-      :pace_required,
-      :status
-    )
-  end
+    def check_organizer
+      unless @event.organizer == current_user
+        redirect_to community_event_path(@community, @event), alert: "イベントの編集・削除権限がありません"
+      end
+    end
+
+    def event_params
+      params.require(:event).permit(
+        :title,
+        :description,
+        :meeting_place,
+        :destination,
+        :start_at,
+        :max_participants,
+        :pace_required,
+        :status
+      )
+    end
 end
