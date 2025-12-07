@@ -21,7 +21,7 @@ class Public::PostsController < ApplicationController
     end
 
     # ページネーションを適用
-    @posts = @posts.page(params[:page])
+    @posts = @posts.page(params[:page]).per(10)
   end
 
   def show

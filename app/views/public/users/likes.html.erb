@@ -1,2 +1,12 @@
-<h1>Public::Users#likes</h1>
-<p>Find me in app/views/public/users/likes.html.erb</p>
+<h2>いいねした投稿</h2>
+
+<% if @liked_posts.any? %>
+  <%= render "public/posts/post_cards", posts: @liked_posts %>
+  <%= paginate @liked_posts %>
+<% else %>
+  <p>まだ投稿にいいねしていません。</p>
+<% end %>
+
+<div class="d-flex justify-content-center mt-4">
+  <%= link_to "マイページへ戻る", mypage_path, class: "btn btn-secondary px-4" %>
+</div>

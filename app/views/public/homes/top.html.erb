@@ -1,39 +1,74 @@
-<div class="container mt-4">
+<div class="container p-0">
+  <div class="jumbotron main-visual text-center">
+    <h1 class="display-4 font-weight-bold text-outline">Welcome to Toulink</h1>
+    <p class="lead text-outline">興味のあるバイクコミュニティと出会おう</p>
+    <%= link_to "コミュニティを探す", communities_path, class: "btn btn-success btn-lg mt-2" %>
+  </div>
+</div>
+
+<div class="container mb-5">
   <div class="row">
+    <!-- メインコンテンツ -->
     <div class="col-lg-9">
-      <h3 class="mt-5 mb-4 border-bottom pb-2 text-success font-weight-bold">
-        <i class="fa-solid fa-people-robbery mr-2"></i>人気コミュニティ（Popular Communities）
-      </h3>
+      
+      <!-- 2. 人気コミュニティ -->
+      <h4 class="mb-3 font-weight-bold text-dark border-left border-success pl-3 py-1" style="border-width: 5px !important;">
+        人気コミュニティ
+        <small class="text-muted ml-2">Popular Communities</small>
+      </h4>
 
       <div class="row">
         <% @popular_communities.each do |community| %>
-          <div class="col-md-6 col-lg-3 mb-4">
-            <div class="card shadow-sm h-100">
-              <%= link_to community_path(community), class: "text-decoration-none text-dark" do %>
-                <div class="card-body p-2 text-center">
-                  <h5 class="card-title font-weight-bold text-success mb-1 small"><%= truncate(community.name, length: 20) %></h5>
-                  <p class="card-text text-muted small"><%= community.community_members.count %> メンバー</p>
+          <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card shadow-sm border-0 h-100 hover-card">
+              <%= link_to community_path(community), class: "text-decoration-none text-dark h-100 d-flex flex-column" do %>
+                <div class="card-body text-center">
+                  <div class="mb-3">
+                    <% if community.community_image.attached? %>
+                      <%= image_tag community.community_image.variant(resize_to_fill: [80, 80]), class: "rounded-circle" %>
+                    <% else %>
+                      <i class="fa-solid fa-users fa-3x text-success"></i>
+                    <% end %>
+                  </div>
+                  <h5 class="card-title font-weight-bold mb-2"><%= truncate(community.name, length: 20) %></h5>
+                  <span class="badge badge-pill badge-light border px-3 py-2">
+                    <i class="fa-solid fa-user-group mr-1"></i> <%= community.community_members.count %> メンバー
+                  </span>
                 </div>
               <% end %>
             </div>
           </div>
-        -<% end %>
+        <% end %>
       </div>
 
-      <h3 class="mb-4 border-bottom pb-2 text-primary font-weight-bold">
-        <i class="fa-regular fa-clipboard mr-2"></i>新着投稿（New Posts）
-      </h3>
+      <!-- 3. 新着投稿セクション -->
+      <h4 class="mb-3 mt-4 font-weight-bold text-dark border-left border-primary pl-3 py-1" style="border-width: 5px !important;">
+        新着投稿
+        <small class="text-muted ml-2">New Posts</small>
+      </h4>
 
       <div class="row">
         <% @new_posts.each do |post| %>
-          <div class="col-md-6 col-lg-3 mb-4">
-            <div class="card shadow-sm h-100">
+          <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card shadow-sm border-0 h-100 hover-card">
               <%= link_to post_path(post), class: "text-decoration-none text-dark" do %>
-                <div class="card-img-top bg-light text-center p-3" style="height: 150px;">
-                </div>
-                <div class="card-body p-2">
-                  <p class="card-title font-weight-bold mb-1 small"><%= truncate(post.title, length: 25) %></p>
-                  <p class="card-text text-muted small mb-0">by <%= post.user.is_active ? post.user.name : "退会済みユーザー" %></p>
+                <% if post.post_image.attached? %>
+                  <%= image_tag post.post_image.variant(resize_to_fill: [400, 200]), 
+                                class: "card-img-top", 
+                                style: "object-fit: cover; height: 150px;" %>
+                <% else %>
+                  <div class="bg-light text-center d-flex align-items-center justify-content-center text-muted" style="height: 150px; border-radius: 5px 5px 0 0;">
+                    <i class="fa-regular fa-image fa-2x"></i>
+                  </div>
+                <% end %>
+                <div class="card-body p-3">
+                  <h6 class="font-weight-bold mb-2"><%= truncate(post.title, length: 25) %></h6>
+                  <div class="d-flex align-items-center mt-3">
+                    <div class="small text-muted">
+                      <i class="fa-regular fa-user mr-1"></i>
+                      <%= post.user.is_active ? post.user.name : "退会済みユーザー" %>
+                    </div>
+                  </div>
                 </div>
               <% end %>
             </div>
@@ -42,23 +77,24 @@
       </div>
     </div>
 
+    <!-- 4. サイドバー -->
     <div class="col-lg-3">
-      <div class="card shadow-sm p-3 sticky-top" style="top: 20px;">
-        <h5 class="font-weight-bold pb-2">メニュー</h5>
+      <div class="card shadow-sm border-0 p-3 sticky-top" style="top: 20px;">
+        <h6 class="font-weight-bold text-secondary mb-3 pl-2">MENU</h6>
         <div class="list-group list-group-flush small">
           <% if current_user %>
-            <%= link_to mypage_path, class: 'list-group-item list-group-item-action' do %>
-              <i class="fa-solid fa-id-card mr-2"></i>マイページへ
+            <%= link_to mypage_path, class: 'list-group-item list-group-item-action border-0 rounded mb-1 px-3' do %>
+              <i class="fa-solid fa-id-card mr-2 text-primary"></i>マイページへ
             <% end %>
-            <%= link_to users_path, class: 'list-group-item list-group-item-action' do %>
-              <i class="fa-solid fa-users mr-2"></i>会員一覧を見る
+            <%= link_to users_path, class: 'list-group-item list-group-item-action border-0 rounded mb-1 px-3' do %>
+              <i class="fa-solid fa-users mr-2 text-info"></i>会員一覧
             <% end %>
           <% end %>
-          <%= link_to posts_path, class: 'list-group-item list-group-item-action' do %>
-            <i class="fa-regular fa-clipboard mr-2"></i>投稿一覧を見る
+          <%= link_to posts_path, class: 'list-group-item list-group-item-action border-0 rounded mb-1 px-3' do %>
+            <i class="fa-regular fa-clipboard mr-2 text-warning"></i>投稿一覧
           <% end %>
-          <%= link_to communities_path, class: 'list-group-item list-group-item-action' do %>
-            <i class="fa-solid fa-earth-asia mr-2"></i>コミュニティを見る
+          <%= link_to communities_path, class: 'list-group-item list-group-item-action border-0 rounded mb-1 px-3' do %>
+            <i class="fa-solid fa-earth-asia mr-2 text-success"></i>コミュニティ
           <% end %>
         </div>
       </div>

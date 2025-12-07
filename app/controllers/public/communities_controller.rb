@@ -5,6 +5,7 @@ class Public::CommunitiesController < ApplicationController
 
   def index
     @communities = Community.active.order(created_at: :desc)
+    @communities = @communities.page(params[:page]).per(10)
   end
 
   def show
