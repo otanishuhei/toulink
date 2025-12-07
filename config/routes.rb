@@ -23,9 +23,9 @@ Rails.application.routes.draw do
 
     # Users（会員）
     resources :users, only: [:index, :show] do
-      get "followings" => "relationships#followings", on: :member
-      get "followers" => "relationships#followers", on: :member
       resource :follows, only: [:create, :destroy]
+      get "followings" => "follows#followings", on: :member
+      get "followers" => "follows#followers", on: :member
     end
 
     # マイページ関連の個別ルーティング

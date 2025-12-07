@@ -7,12 +7,12 @@ class Follow < ApplicationRecord
 
   ## -- バリデーション --
   # 同じユーザーを複数回フォローすることを防ぐ
-  validates :follower_id, uniqueness: { scope: :followed_id, message: "は既にフォローしています" }
+  validates :follower_id, uniqueness: { scope: :followed_id, message: "は既にフォロー済です" }
   # 自分自身をフォローできないようにする
   validate :cannot_follow_self
 
   private
     def cannot_follow_self
-      errors.add(:followed_id, "は自分自身であってはなりません") if follower_id == followed_id
+      errors.add(:followed_id, "は自分自身をフォローできません") if follower_id == followed_id
     end
 end

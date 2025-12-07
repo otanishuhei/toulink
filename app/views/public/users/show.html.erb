@@ -20,10 +20,14 @@
               <%= @user.name %>
             </h2>
             <p class="text-muted mb-3"><%= @user.email %></p>
-            
-            <%# ログインユーザーが自分のページを見ている場合のみ編集リンクを表示 %>
+
+            <p>
+              フォロー数 : <%= @user.followings.count %>
+              フォロワー数 : <%= @user.followers.count %>
+            </p>
+
             <% if user_signed_in? && @user == current_user %>
-              <%= link_to "プロフィール編集", edit_user_registration_path, class: "btn btn-outline-info btn-sm" %>
+              <%= link_to "マイページへ", mypage_path, class: "btn btn-outline-info btn-sm" %>
             <% end %>
           </div>
         </div>

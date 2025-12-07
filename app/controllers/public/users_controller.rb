@@ -4,7 +4,7 @@ class Public::UsersController < ApplicationController
   before_action :ensure_correct_user, only: [:edit, :update, :unsubscribe, :withdraw]
 
   def index
-    @users = User.active.order(created_at: :desc).page(params[:page]).per(20)
+    @users = User.active.order(created_at: :desc).page(params[:page]).per(10)
   end
 
   def show
@@ -85,18 +85,28 @@ class Public::UsersController < ApplicationController
   end
 
   def likes
-    # @user = current_user
-    # @liked_posts = @user.liked_posts.published.page(params[:page]).per(10)
+    @user = current_user
+    @liked_posts = @user.liked_posts.published.page(params[:page]).per(10)
   end
 
   def comments
-    # @user = current_user
-    # @comments = @user.comments.published.order(created_at: :desc).page(params[:page]).per(10)
+    @user = current_user
+    @comments = @user.comments.published.order(created_at: :desc).page(params[:page]).per(10)
   end
 
   def communities
     # @user = current_user
     # @communities = @user.communities.active.page(params[:page]).per(10)
+  end
+
+  def followings
+    user = User.find(params[:user_id])
+    @users = user.followings
+  end
+
+  def followers
+    user = User.find(params[:user_id])
+    @users = user.followers
   end
 
   private

@@ -7,28 +7,7 @@
     <% end %>
   </div>
 
-  <% @posts.each do |post| %>
-    <div class="card mb-3 shadow-sm">
-      <div class="d-flex align-items-center">
-        <div class="card-body p-2 flex-grow-1">
-          <h5 class="card-title mb-1">
-            <%= link_to post.title, post_path(post), class: "text-dark" %>
-          </h5>
-          <p class="card-text small mb-1"><%= truncate(post.body, length: 100) %></p>
-          <p class="text-muted small mb-0">
-            投稿者: <%= post.user.is_active ? post.user.name : "退会済みユーザー" %> | 投稿日: <%= l(post.created_at, format: :short) %>
-          </p>
-        </div>
-        <% if post.post_image.attached? %>
-          <%= image_tag post.post_image.variant(resize_to_limit: [150, 150]), class: "rounded mr-2" %>
-        <% end %>
-        <span class="btn btn-outline-dark mr-2 disabled text-dark">
-          <i class="fa-regular fa-comment"></i> <%= post.comments.published.count %>
-        </span>
-        <%= render "public/likes/like_button", post: post %>
-      </div>
-    </div>
-  <% end %>
+  <%= render "post_cards", posts: @posts %>
 
   <div class="d-flex justify-content-center mt-4">
     <%= paginate @posts %>
