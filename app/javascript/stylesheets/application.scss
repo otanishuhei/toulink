@@ -4,13 +4,50 @@
   font-size: 75%;
 }
 
+.text-outline {
+  color: white;
+  text-shadow: 2px 2px 0 black,
+               -2px 2px 0 black,
+               2px -2px 0 black,
+               -2px -2px 0 black,
+               0px 2px 0 black,
+               2px 0px 0 black,
+               0px -2px 0 black,
+               -2px 0px 0 black;
+}
+
 .table th, .table td {
   vertical-align: middle;
   text-align: center;
 }
 
-/* 太めの黄色い下線 */
+.navbar-dark .navbar-toggler {
+  border-color: #fff;
+}
+
 .border-bottom-thick-yellow {
   display: inline-block;
   border-bottom: 5px solid #ffc107;
+}
+
+.main-visual {
+background-image: url("../images/bike1.jpg");
+background-size: cover;
+background-position: center;
+}
+
+@media (max-width: 765px) {
+  .custom-h2 {
+    font-size: 175% !important;
   }
+
+  .custom-p {
+    font-size: 100% !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .custom-h2 {
+    font-size: 140% !important;
+  }
+}

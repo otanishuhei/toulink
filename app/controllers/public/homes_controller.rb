@@ -1,7 +1,7 @@
 class Public::HomesController < ApplicationController
   def top
     # 新着投稿8件（投稿日時が新しい順）
-    @new_posts = Post.published.order(created_at: :desc).limit(8)
+    @new_posts = Post.published.order(created_at: :desc).limit(9)
     # 人気コミュニティグループ3件（メンバー数が多い順）
     @popular_communities = Community.active.left_joins(:community_members)
                                     .group(:id)

@@ -1,0 +1,14 @@
+<h2>フォロー中のユーザー</h2>
+
+<% if @users.any? %>
+  <% @users.each do |user| %>
+    <%= render "public/users/user_cards", user: user %>
+  <% end %>
+  <%= paginate @users %>
+<% else %>
+  <p>ユーザーはいません</p>
+<% end %>
+
+<div class="d-flex justify-content-center mt-4">
+  <%= link_to "マイページへ戻る", mypage_path, class: "btn btn-secondary px-4" %>
+</div>

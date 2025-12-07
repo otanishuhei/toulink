@@ -1,0 +1,26 @@
+<div class="card mb-3 shadow-sm">
+  <div class="d-flex align-items-center">
+    <% if user.profile_image.attached? %>
+      <%= image_tag user.profile_image.variant(resize_to_limit: [80, 80]), class: "rounded-circle ml-2" %>
+    <% else %>
+      <i class="fas fa-user-circle fa-4x ml-2 text-secondary"></i>
+    <% end %>
+    <div class="card-body p-2 ml-2 flex-grow-1">
+      <h5 class="card-title mb-1">
+        <%= link_to user.name, user_path(user), class: "text-dark" %>
+      </h5>
+      <p class="card-text small mb-1">
+        自己紹介: <%= truncate(user.introduction, length: 100) %>
+      </p>
+      <p>
+        フォロー数: <%= user.followings.count %>
+      </p>
+      <p>
+        フォロワー数: <%= user.followers.count %>
+      </p>
+      <p>
+        <%= render "shared/follows_btn", user: user, options: { class: "follow-link" } %>
+      </p>
+    </div>
+  </div>
+</div>
