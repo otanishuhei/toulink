@@ -3,7 +3,6 @@
   <hr>
 
   <% if @comments.present? %>
-    <%= render 'shared/error_messages', object: @comment %>
 
     <table class="table table-hover table-striped text-center">
       <thead class="thead-dark">
@@ -13,8 +12,8 @@
           <th>投稿タイトル</th>
           <th>コメント内容</th>
           <th>投稿者</th>
-          <th><%= Comment.human_attribute_name(:is_published) %></th>
-          <th><%= Comment.human_attribute_name(:is_deleted) %></th>
+          <th>公開ステータス</th>
+          <th>ユーザー削除フラグ</th>
           <th>対応</th>
         </tr>
       </thead>
@@ -43,9 +42,9 @@
             <%# ユーザー削除フラグ %>
             <td>
               <% if comment.is_deleted %>
-                <span class="badge badge-warning">ユーザー削除済</span>
+                <span class="badge badge-warning">削除済</span>
               <% else %>
-                <span class="badge badge-light">有効</span>
+                <span class="badge badge-light">未削除</span>
               <% end %>
             </td>
             

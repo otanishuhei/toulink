@@ -11,7 +11,8 @@
           <th>投稿者</th>
           <th>コメント数</th>
           <th>いいね数</th>
-          <th><%= Post.human_attribute_name(:is_published) %></th>
+          <th>公開ステータス</th>
+          <th>ユーザー削除フラグ</th>
           <th>詳細</th>
         </tr>
       </thead>
@@ -19,12 +20,24 @@
         <% @posts.each do |post| %>
           <tr>
             <td><%= post.id %></td>
-            <td><%= post.title %></td>
-            <%# user アソシエーションがあると仮定 %>
-            <td><%= link_to (post.user.name rescue '---'), admin_user_path(post.user) rescue '#' %></td>
-            <%# comments, likes アソシエーションがあると仮定 %>
-            <td><%= post.comments.count rescue 'N/A' %></td> 
-            <td><%= post.likes.count rescue 'N/A' %></td>
+            <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+              <%= post.title %>
+            </td>
+
+            <%# ユーザー情報 %>
+            <td>
+              <%= link_to(
+                    (post.user&.name || '退会済ユーザー'),
+                    admin_user_path(post.user),
+                    class: "text-dark"
+                  ) rescue '退会済ユーザー' %>
+            </td>
+
+            <%# コメント数/いいね数 %>
+            <td><%= post.comments.count %></td>
+            <td><%= post.likes.count %></td>
+
+            <%# 公開ステータス %>
             <td>
               <% if post.is_published %>
                 <span class="badge badge-success">公開中</span>
@@ -32,19 +45,28 @@
                 <span class="badge badge-danger">非公開</span>
               <% end %>
             </td>
+
+            <%# ユーザー削除フラグ %>
+            <td>
+              <% if post.is_deleted %>
+                <span class="badge badge-warning">削除済</span>
+              <% else %>
+                <span class="badge badge-light">未削除</span>
+              <% end %>
+            </td>
+
+            <%# 詳細画面リンク %>
             <td><%= link_to "詳細", admin_post_path(post), class: "btn btn-sm btn-info" %></td>
           </tr>
         <% end %>
       </tbody>
     </table>
 
-    <%# ページネーション %>
     <div class="d-flex justify-content-center">
       <%= paginate @posts %>
     </div>
 
   <% else %>
-    <%# 投稿が1件も存在しない場合に表示されるメッセージ %>
     <div class="alert alert-info text-center" role="alert">
       <strong>現在、作成された投稿はありません。</strong>
       <p class="mt-2 mb-0">新しく投稿されるまでお待ちください。</p>
