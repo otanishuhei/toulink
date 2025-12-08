@@ -11,7 +11,7 @@ class Admin::PostsController < ApplicationController
 
   def update
     if @post.toggle(:is_published).save
-      flash[:notice] = "{#@post.name} の公開ステータスを更新しました"
+      flash[:notice] = "#{@post.title} の公開ステータスを更新しました"
       redirect_to admin_post_path(@post)
     else
       flash.now[:alert] = "投稿ステータスの更新に失敗しました"
