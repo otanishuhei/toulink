@@ -11,7 +11,7 @@ class Admin::CommunitiesController < ApplicationController
 
   def update
     if @community.toggle(:is_active).save
-      flash[:notice] = "{#@community.name} のステータスを更新しました"
+      flash[:notice] = "#{@community.name} のステータスを更新しました"
       redirect_to admin_community_path(@community)
     else
       flash.now[:alert] = "コミュニティステータスの更新に失敗しました"

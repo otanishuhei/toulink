@@ -7,8 +7,8 @@ class Admin::CommentsController < ApplicationController
   end
 
   def update
-    if @comment.toggle(:is_active).save
-      flash[:notice] = "{#@comment.name} の公開ステータスを更新しました"
+    if @comment.toggle(:is_published).save
+      flash[:notice] = "#{@comment.body} の公開ステータスを更新しました"
       redirect_to admin_comments_path(page: params[:page])
     else
       flash.now[:alert] = "コメントステータスの更新に失敗しました"
