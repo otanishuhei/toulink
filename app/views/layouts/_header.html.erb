@@ -18,6 +18,10 @@
         <span class="navbar-text ml-3 d-none d-lg-block">
           ユーザー名：<%= current_user.name %>
         </span>
+      <% elsif admin_signed_in? %>
+        <span class="navbar-text ml-3 d-none d-lg-block">
+          ユーザー名：管理者アカウント
+        </span>
       <% end %>
 
       <div class="ml-auto d-flex flex-column align-items-end">

@@ -33,6 +33,14 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable, :trackable
 
   ## -- メソッド --
+  def active_for_authentication?
+    super && is_active
+  end
+
+  def inactive_message
+    is_active ? super : :inactive
+  end
+
   def follow(user)
     active_relationships.create(followed_id: user.id)
   end
