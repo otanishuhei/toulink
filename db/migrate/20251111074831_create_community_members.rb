@@ -1,8 +1,8 @@
 class CreateCommunityMembers < ActiveRecord::Migration[6.1]
   def change
     create_table :community_members do |t|
-      t.references  :user,        null: false, foreign_key: true
-      t.references  :community,   null: false, foreign_key: true
+      t.references  :user,        null: false, foreign_key: true, type: :bigint
+      t.references  :community,   null: false, foreign_key: true, type: :bigint
       t.integer     :role,        null: false, default: 0 # enumで管理（0: メンバー, 1: リーダー）
       t.timestamps
     end

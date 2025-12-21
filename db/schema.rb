@@ -11,6 +11,7 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 2025_11_25_172242) do
+
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -57,8 +58,8 @@ ActiveRecord::Schema.define(version: 2025_11_25_172242) do
   end
 
   create_table "comments", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "post_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "post_id", null: false
     t.text "body", null: false
     t.boolean "is_published", default: true, null: false
     t.boolean "is_deleted", default: false, null: false
@@ -69,7 +70,7 @@ ActiveRecord::Schema.define(version: 2025_11_25_172242) do
   end
 
   create_table "communities", force: :cascade do |t|
-    t.integer "owner_id", null: false
+    t.bigint "owner_id", null: false
     t.string "name", null: false
     t.text "description"
     t.boolean "is_active", default: true, null: false
@@ -80,8 +81,8 @@ ActiveRecord::Schema.define(version: 2025_11_25_172242) do
   end
 
   create_table "community_members", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "community_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "community_id", null: false
     t.integer "role", default: 0, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -91,8 +92,8 @@ ActiveRecord::Schema.define(version: 2025_11_25_172242) do
   end
 
   create_table "events", force: :cascade do |t|
-    t.integer "community_id", null: false
-    t.integer "organizer_id", null: false
+    t.bigint "community_id", null: false
+    t.bigint "organizer_id", null: false
     t.string "title", null: false
     t.text "description", null: false
     t.string "meeting_place", null: false
@@ -119,8 +120,8 @@ ActiveRecord::Schema.define(version: 2025_11_25_172242) do
   end
 
   create_table "likes", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "post_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "post_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["post_id"], name: "index_likes_on_post_id"
@@ -129,8 +130,8 @@ ActiveRecord::Schema.define(version: 2025_11_25_172242) do
   end
 
   create_table "participations", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "event_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "event_id", null: false
     t.integer "status", default: 0, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -140,7 +141,7 @@ ActiveRecord::Schema.define(version: 2025_11_25_172242) do
   end
 
   create_table "post_tags", force: :cascade do |t|
-    t.integer "post_id", null: false
+    t.bigint "post_id", null: false
     t.integer "tag_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -150,7 +151,7 @@ ActiveRecord::Schema.define(version: 2025_11_25_172242) do
   end
 
   create_table "posts", force: :cascade do |t|
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.string "title", null: false
     t.text "body", null: false
     t.float "latitude"
