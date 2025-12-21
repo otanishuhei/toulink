@@ -142,7 +142,7 @@ ActiveRecord::Schema.define(version: 2025_11_25_172242) do
 
   create_table "post_tags", force: :cascade do |t|
     t.bigint "post_id", null: false
-    t.integer "tag_id", null: false
+    t.bigint "tag_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["post_id", "tag_id"], name: "index_post_tags_on_post_id_and_tag_id", unique: true
