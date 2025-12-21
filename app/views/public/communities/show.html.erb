@@ -61,7 +61,7 @@
         </div>
       <% end %>
 
-      <% if @membership.try(:leader?) %>
+      <% if @membership&.leader? || @membership&.member? %>
         <div class="d-flex align-items-center mt-5 mb-3">
           <h3><i class="fas fa-edit"></i> 企画中のイベント</h3>
           <%= link_to "イベントを企画する", new_community_event_path(@community), class: "btn btn-outline-primary ml-4" %>
