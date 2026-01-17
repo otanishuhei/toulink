@@ -1,8 +1,8 @@
 class CreateParticipations < ActiveRecord::Migration[6.1]
   def change
     create_table :participations do |t|
-      t.references :user,     null: false, foreign_key: true
-      t.references :event,    null: false, foreign_key: true
+      t.references :user,     null: false, foreign_key: true, type: :bigint
+      t.references :event,    null: false, foreign_key: true, type: :bigint
       t.integer :status,      null: false, default: 0
       t.timestamps
     end
