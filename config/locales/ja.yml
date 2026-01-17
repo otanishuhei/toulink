@@ -6,10 +6,10 @@ ja:
         leader: "リーダー"
     event:
       pace_required:
-        pace_any: "ペース不問"
-        pace_slow: "ゆっくり景色重視"
-        pace_average: "平均的"
-        pace_fast: "ハイペース"
+        pace_any: "こだわらない"
+        pace_slow: "のんびり"
+        pace_average: "ふつう"
+        pace_fast: "きびきび"
       status:
         draft: "企画中（非公開）"
         recruiting: "募集中"
@@ -22,9 +22,87 @@ ja:
         confirmed: "参加確定"
         canceled: "キャンセル"
   activerecord:
+    model:
+      user: "ユーザー"
+      follow: "フォロー"
+      post: "投稿"
+      like: "いいね"
+      comment: "コメント"
+      tag: "タグ"
+      community: "コミュニティ"
+      event: "イベント"
+      participation: "イベント参加"
+    attributes:
+      user:
+        name: "アカウント名"
+        email: "メールアドレス"
+        password: "パスワード"
+        introduction: "自己紹介文"
+        is_active: "アカウント状態"
+        created_at: "登録日"
+        updated_at: "更新日"
+      follow:
+        follower_id: "フォロー元ユーザー"
+        followed_id: "フォロー先ユーザー"
+        created_at: "フォロー日時"
+        updated_at: "更新日時"
+      post:
+        id: "投稿ID"
+        user_id: "投稿者"
+        title: "投稿タイトル"
+        body: "本文"
+        post_image: "投稿画像"
+        latitude: "緯度"
+        longitude: "経度"
+        is_published: "公開状態"
+        is_deleted: "削除状態"
+        created_at: "投稿日時"
+        updated_at: "更新日時"
+      like:
+        user_id: "いいねしたユーザー"
+        post_id: "いいねした対象の投稿"
+        created_at: "いいねした日時"
+        updated_at: "更新日時"
+      comment:
+        user_id: "コメントしたユーザー"
+        post_id: "コメントした投稿"
+        body: "コメント"
+        is_published: "公開状態"
+        is_deleted: "削除状態"
+        created_at: "コメント作成日時"
+        updated_at: "更新日時"
+      tag:
+        name: "タグ名"
+        is_deleted: "無効化ステータス"
+        created_at: "タグ作成日時"
+        updated_at: "更新日時"
+      community:
+        owner_id: "コミュニティオーナー"
+        name: "コミュニティ名"
+        description: "コミュニティ説明"
+        community_image: "コミュニティ画像"
+        is_active: "コミュニティ状態"
+        created_at: "コミュニティ作成日時"
+        updated_at: "更新日時"
+      event:
+        community_id: "イベント作成コミュニティ"
+        organizer_id: "イベント主催者"
+        title: "イベント名"
+        description: "イベント詳細"
+        start_at: "開催日時"
+        max_participants: "最大参加人数"
+        pace_required: "走行ペース"
+        status: "募集/進行ステータス"
+        is_deleted: "削除状態"
+        created_at: "イベント作成日時"
+        updated_at: "更新日時"
+      participation:
+        user_id: "参加者"
+        event_id: "イベント"
+        status: "参加状況"
     errors:
       messages:
-        record_invalid: 'バリデーションに失敗しました: %{errors}'
+        record_invalid: "バリデーションに失敗しました: %{errors}"
         restrict_dependent_destroy:
           has_one: "%{record}が存在しているので削除できません"
           has_many: "%{record}が存在しているので削除できません"
@@ -123,6 +201,7 @@ ja:
       model_invalid: 'バリデーションに失敗しました: %{errors}'
       not_a_number: は数値で入力してください
       not_an_integer: は整数で入力してください
+      not_saved: "%{count}件のエラーが発生したため、保存できませんでした"
       odd: は奇数にしてください
       other_than: は%{count}以外の値にしてください
       present: は入力しないでください
@@ -202,4 +281,3 @@ ja:
       long: "%Y/%m/%d %H:%M"
       short: "%m/%d %H:%M"
     pm: 午後
-
