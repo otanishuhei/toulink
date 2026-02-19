@@ -1,5 +1,6 @@
 <% if @comment.errors.empty? %>
   $("#comment_area_<%= @post.id %>").html("<%= j(render('public/comments/comment_list', post: @post, comments: @comments)) %>");
+  $("#comment_form_<%= @post.id %>")[0].reset();
 <% else %>
-  alert('コメントの投稿に失敗しました。\n\n<%= @comment.errors.full_messages.join('\n').j %>');
+  alert('コメントの投稿に失敗しました。\n\n<%= j(@comment.errors.full_messages.join('\n')) %>');
 <% end %>

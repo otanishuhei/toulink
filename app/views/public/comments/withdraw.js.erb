@@ -1,0 +1,8 @@
+<% if @error_message.present? %>
+  alert("<%= j(@error_message) %>");
+<%elsif @comment.errors.any? %>
+  alert("<%= j(@comment.errors.full_messages.join('\n')) %>");
+<% else %>
+  $("#comment_<%= @comment.id %>").remove();
+  $("#comment_area_<%= @post.id %>").html("<%= j(render('public/comments/comment_list', post:@post, comments:@comments)) %>");
+<% end %>

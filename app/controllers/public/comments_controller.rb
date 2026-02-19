@@ -3,30 +3,34 @@ class Public::CommentsController < ApplicationController
 
   def create
     @post = Post.find(params[:post_id])
-    @comment = @post.comments.new(comment_params)
+    @comment = @post.comments.build(comment_params)
     @comment.user_id = current_user.id
 
-    @comments = @post.comments.published.order(create_at: :desc).includes(:user)
-
     if @comment.save
-    else
+      @comments = @post.comments.published.order(created_at: :desc).includes(:user)
+    end
+
+    respond_to do |format|
+      format.js
     end
   end
 
   def withdraw
     @comment = Comment.find(params[:id])
+    @post = @comment.post
+    @comments = @post.comments.published.order(created_at: :desc).includes(:user)
 
-    unless @comment.user == current_user
-      redirect_to post_path(@comment.post), alert: "不正な操作です"
-      return
-    end
-
-    if @comment.update(is_deleted: true)
-      flash[:notice] = "コメントを削除しました"
+    if @comment.user != current_user
+      @error_message = "不正な操作です"
+    elsif @comment.update(is_deleted: true)
+      @comments = @post.comments.published.order(created_at: :desc).includes(:user)
     else
-      flash[:alert] = "コメントの削除に失敗しました"
+      @error_message = "コメントの削除に失敗しました"
     end
-    redirect_to post_path(@comment.post)
+
+    respond_to do |format|
+      format.js
+    end
   end
 
   private
